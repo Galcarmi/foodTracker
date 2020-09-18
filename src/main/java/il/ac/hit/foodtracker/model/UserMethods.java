@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class UserUtils {
+public class UserMethods {
 
 	public static String registerUser(String username, String password) throws Exception {
 		
@@ -29,7 +29,7 @@ public class UserUtils {
 			user.setToken(token);
 			user.setToken_valid_until(tokenValidity);
 			
-			UserUtils.createUser(user);
+			UserMethods.createUser(user);
 			
 			return token;
 		
@@ -61,11 +61,13 @@ public class UserUtils {
 	
 	public static void main(String[] args) {
 		try {
-			UserUtils.registerUser("gal", "555");
+			UserMethods.registerUser("gal", "555");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }
