@@ -1,4 +1,4 @@
-package il.ac.hit.foodtracker.routers;
+package il.ac.hit.foodtracker.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

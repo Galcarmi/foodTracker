@@ -20,6 +20,7 @@ public class HibernateCreateUser {
 		
 		try {
 			
+			
 			User user = new User("omer","123",new Date());
 			session.beginTransaction();
 			
