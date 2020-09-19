@@ -10,25 +10,22 @@ import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
-@Path("/register")
-public class Register {
+@Path("/login")
+public class Login {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response register(User user) {
+	public Response login(User user) {
 		try {
-			String username = user.getUsername();
-			String password = user.getPassword();
-			
-			String token = UserUtils.registerUser(username, password);
+			String token = UserUtils.verifyUserLogin(user);
 			
 			return Response.status(Status.OK)
 		               .entity(token)
 		               .build();
 		}
 		catch(Exception e) {
-			return Response.status(Status.UNAUTHORIZED).entity("register failed").build();
+			return Response.status(Status.UNAUTHORIZED).entity("login failed").build();
 		}
 		
 	}

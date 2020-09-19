@@ -30,12 +30,6 @@ public class User {
 	
 	@Column(name="created_date")
 	private Date created_date;
-	
-	@Column(name="token")
-	private String token;
-	
-	@Column(name="token_valid_until")
-	private Date token_valid_until;
 
 	@OneToMany(mappedBy = "user",
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE,
@@ -93,21 +87,6 @@ public class User {
 		this.eatingEvents = eatingEvents;
 	}
 	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Date getToken_valid_until() {
-		return token_valid_until;
-	}
-
-	public void setToken_valid_until(Date token_valid_until) {
-		this.token_valid_until = token_valid_until;
-	}
 
 	public void addFoodEatingEvent(FoodEatingEvent fev) {
 		if(this.eatingEvents ==null) {
@@ -117,6 +96,12 @@ public class User {
 		this.eatingEvents.add(fev);
 		
 		fev.setUser(this);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", created_date=" + created_date
+				+ ", eatingEvents=" + eatingEvents + "]";
 	}
 
 
