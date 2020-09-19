@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.ws.rs.NotAuthorizedException;
 
 import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.model.VerifyUserLoggedInResult;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
 public class UserUtils {
@@ -32,7 +33,7 @@ public class UserUtils {
 
 	}
 
-	public static boolean verifyUserLoggedIn(String jwt) {
+	public static VerifyUserLoggedInResult verifyUserLoggedIn(String jwt) {
 		HashMap<String, String> userDetails = JwtUtils.getJwtDetails(jwt);
 		String userId = userDetails.get("userId");
 		String username = userDetails.get("username");
@@ -44,11 +45,11 @@ public class UserUtils {
 				verified = true;
 			}
 
-			return verified;
+			return new VerifyUserLoggedInResult(userDetails,verified);
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			return verified;
+			return new VerifyUserLoggedInResult(null,false);
 		}
 	}
 

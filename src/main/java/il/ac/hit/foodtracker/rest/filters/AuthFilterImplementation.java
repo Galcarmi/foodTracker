@@ -6,6 +6,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
+import il.ac.hit.foodtracker.model.VerifyUserLoggedInResult;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 @AuthFilter
@@ -13,16 +14,19 @@ import il.ac.hit.foodtracker.utils.UserUtils;
 public class AuthFilterImplementation implements ContainerRequestFilter {
 
 	@Override
-	public void filter(ContainerRequestContext ctx) throws IOException {
+	public void filter(ContainerRequestContext crc) throws IOException {
 		try {
-			String authHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
+			String authHeader = crc.getHeaderString(HttpHeaders.AUTHORIZATION);
 			if (authHeader == null) {
 				WebApplicationErrorThrower.throwError("Bearer missing");
 			}
 
 			String token = parseToken(authHeader);
-			if (verifyToken(token) == false) {
+			VerifyUserLoggedInResult verifyResult = verifyToken(token);
+			if (!verifyResult.isVerified()) {
 				WebApplicationErrorThrower.throwError("Bearer error=\"invalid_token\"");
+			} else {
+				crc.setProperty("username", verifyResult.getJwtUserDetails().get("username"));
 			}
 
 		} catch (AuthVerifyException e) {
@@ -35,7 +39,6 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 	}
 
 	private String parseToken(String header) throws AuthVerifyException {
-		System.out.println("headerrr" + header);
 		String[] tokenHeader = header.split(" ");
 
 		if (!tokenHeader[0].equals("Bearer")) {
@@ -45,7 +48,7 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 		return tokenHeader[1];
 	}
 
-	private boolean verifyToken(String token) {
+	private VerifyUserLoggedInResult verifyToken(String token) {
 
 		return UserUtils.verifyUserLoggedIn(token);
 	}
