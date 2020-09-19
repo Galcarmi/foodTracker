@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
-	
 
 	public static Date getTommorowDate() {
 		Date tommorow = new Date();
@@ -12,7 +11,7 @@ public class DateUtils {
 		c.setTime(tommorow);
 		c.add(Calendar.DATE, 1);
 		tommorow = c.getTime();
-		
+
 		return tommorow;
 	}
 }

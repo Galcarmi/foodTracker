@@ -16,31 +16,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-	
+
 	@Id
-	@Column(name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="username")
+
+	@Column(name = "username", unique = true)
 	private String username;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="created_date")
+
+	@Column(name = "created_date")
 	private Date created_date;
 
-	@OneToMany(mappedBy = "user",
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			   	   	CascadeType.DETACH,CascadeType.REFRESH})
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+			CascadeType.REFRESH })
 	private List<FoodEatingEvent> eatingEvents;
 
 	public User() {
 		super();
 	}
 
-	public User( String username, String password, Date created_date) {
+	public User(String username, String password, Date created_date) {
 		super();
 		setPassword(password);
 		setUsername(username);
@@ -86,15 +85,14 @@ public class User {
 	public void setEatingEvents(List<FoodEatingEvent> eatingEvents) {
 		this.eatingEvents = eatingEvents;
 	}
-	
 
 	public void addFoodEatingEvent(FoodEatingEvent fev) {
-		if(this.eatingEvents ==null) {
+		if (this.eatingEvents == null) {
 			this.eatingEvents = new ArrayList<>();
 		}
-		
+
 		this.eatingEvents.add(fev);
-		
+
 		fev.setUser(this);
 	}
 
@@ -103,8 +101,5 @@ public class User {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", created_date=" + created_date
 				+ ", eatingEvents=" + eatingEvents + "]";
 	}
-
-
-	
 
 }

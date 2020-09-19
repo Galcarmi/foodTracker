@@ -13,7 +13,7 @@ import il.ac.hit.foodtracker.rest.filters.AuthFilter;
 
 @Path("/foodevents")
 public class FoodEvents {
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
@@ -21,27 +21,25 @@ public class FoodEvents {
 	public String viewFoodEvents(@Context ContainerRequestContext crc) {
 		System.out.println(crc.getProperty("username"));
 		return "foodevents";
-		
+
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/{foodEventId}")
-	public String viewFoodEvent( @PathParam("foodEventId") String foodEventId) {
+	public String viewFoodEvent(@PathParam("foodEventId") String foodEventId) {
 		return "foodevent:" + foodEventId;
-		
+
 	}
-	
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/new")
 	public String addFoodEvent() {
 		return "addFoodEvent";
-		
+
 	}
-	
-	
+
 }

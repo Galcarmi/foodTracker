@@ -1,5 +1,6 @@
 package il.ac.hit.foodtracker.rest;
 
+import org.hibernate.exception.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,17 +21,16 @@ public class Register {
 		try {
 			String username = user.getUsername();
 			String password = user.getPassword();
-			
+
 			String token = UserUtils.registerUser(username, password);
-			
-			return Response.status(Status.OK)
-		               .entity(token)
-		               .build();
-		}
-		catch(Exception e) {
+
+			return Response.status(Status.OK).entity(token).build();
+		} catch (ConstraintViolationException e) {
+			return Response.status(Status.UNAUTHORIZED).entity("user already exists").build();
+		} catch (Exception e) {
 			return Response.status(Status.UNAUTHORIZED).entity("register failed").build();
 		}
-		
+
 	}
-	
+
 }

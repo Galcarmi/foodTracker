@@ -7,7 +7,7 @@ import java.lang.annotation.ElementType;
 import javax.ws.rs.NameBinding;
 
 @NameBinding
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AuthFilter {}
-
+public @interface AuthFilter {
+}
