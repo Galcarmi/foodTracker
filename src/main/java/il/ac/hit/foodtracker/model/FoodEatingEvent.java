@@ -19,95 +19,95 @@ public class FoodEatingEvent {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private int m_Id;
 	
 	@Column(name="name")
-	private String name;
+	private String m_Name;
 	
 	@Column(name="category")
-	private String category;
+	private String m_Category;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id")
-	private User user;
+	private User m_User;
 	
 	@Column(name="calory")
-	private int calory;
+	private int m_Calory;
 	
 	@Column(name="created_date")
-	private Date created_date;
+	private Date m_Created_date;
 
 	@Column(name="update_date")
-	private Date update_date;
+	private Date m_Update_date;
 
 	
 	public FoodEatingEvent() {
 		super();
 	}
 
-	public FoodEatingEvent(String name, int calory, Date created_date, Date update_date,String category) {
+	public FoodEatingEvent(String i_Name, int i_Calory, Date i_Created_date, Date i_Update_date,String i_Category) {
 		super();
-		setName(name);
-		setCalory(calory);
-		setCreated_date(created_date);
-		setUpdate_date(update_date);
-		setCategory(category);
+		setName(i_Name);
+		setCalory(i_Calory);
+		setCreated_date(i_Created_date);
+		setUpdate_date(i_Update_date);
+		setCategory(i_Category);
 	}
 
 	public int getId() {
-		return id;
+		return m_Id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.m_Id = id;
 	}
 
 	public String getName() {
-		return name;
+		return m_Name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.m_Name = name;
 	}
 
 	public User getUser() {
-		return user;
+		return m_User;
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.m_User = user;
 	}
 
 	public int getCalory() {
-		return calory;
+		return m_Calory;
 	}
 
 	public void setCalory(int calory) {
-		this.calory = calory;
+		this.m_Calory = calory;
 	}
 
 	public Date getCreated_date() {
-		return created_date;
+		return m_Created_date;
 	}
 
 	public void setCreated_date(Date created_date) {
-		this.created_date = created_date;
+		this.m_Created_date = created_date;
 	}
 
 	public Date getUpdate_date() {
-		return update_date;
+		return m_Update_date;
 	}
 
 	public void setUpdate_date(Date update_date) {
-		this.update_date = update_date;
+		this.m_Update_date = update_date;
 	}
 
 	public String getCategory() {
-		return category;
+		return m_Category;
 	}
 
 	public void setCategory(String category) {
-		this.category = category;
+		this.m_Category = category;
 	}
 
 
