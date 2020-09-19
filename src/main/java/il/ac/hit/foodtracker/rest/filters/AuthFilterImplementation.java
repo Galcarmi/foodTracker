@@ -5,6 +5,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
+import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 @AuthFilter
@@ -13,24 +14,32 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext ctx) throws IOException {
-		String authHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
-		if (authHeader == null) {
-			WebApplicationErrorThrower.throwError("Bearer missing");
-		}
-			
-		String token = parseToken(authHeader);
-		if (verifyToken(token) == false) {
-			WebApplicationErrorThrower.throwError("Bearer error=\"invalid_token\"");
+		try {
+			String authHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
+			if (authHeader == null) {
+				WebApplicationErrorThrower.throwError("Bearer missing");
+			}
+
+			String token = parseToken(authHeader);
+			if (verifyToken(token) == false) {
+				WebApplicationErrorThrower.throwError("Bearer error=\"invalid_token\"");
+			}
+
+		} catch (AuthVerifyException e) {
+			e.printStackTrace();
+			WebApplicationErrorThrower.throwError(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			WebApplicationErrorThrower.throwError("server error");
 		}
 	}
 
-	private String parseToken(String header) {
-		//TODO fix parsetoken returning null
-		System.out.println("headerrr"+ header);
+	private String parseToken(String header) throws AuthVerifyException {
+		System.out.println("headerrr" + header);
 		String[] tokenHeader = header.split(" ");
 
-		if (tokenHeader[0] != "Bearer") {
-			return null;
+		if (!tokenHeader[0].equals("Bearer")) {
+			throw new AuthVerifyException("token missing bearer prefix!");
 		}
 
 		return tokenHeader[1];

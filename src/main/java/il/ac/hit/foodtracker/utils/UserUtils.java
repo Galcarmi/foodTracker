@@ -40,7 +40,7 @@ public class UserUtils {
 
 		try {
 			User userFromJwt = UserUtilsHibernate.getUserById(Integer.parseInt(userId));
-			if (userFromJwt.getId() == Integer.parseInt(userId) && userFromJwt.getUsername() == username) {
+			if (userFromJwt.getId() == Integer.parseInt(userId) && userFromJwt.getUsername().equals(username)) {
 				verified = true;
 			}
 
