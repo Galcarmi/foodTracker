@@ -33,9 +33,10 @@ public class FoodEvents {
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/{foodEventId}")
-	public String viewFoodEvent(@PathParam("foodEventId") String foodEventId) {
-		return "foodevent:" + foodEventId;
-
+	public FoodEatingEvent viewFoodEvent(@PathParam("foodEventId") String foodEventId) {
+		FoodEatingEvent fev = FoodEventsUtils.getFoodEventById(Integer.parseInt(foodEventId));
+		
+		return fev;
 	}
 
 	@POST

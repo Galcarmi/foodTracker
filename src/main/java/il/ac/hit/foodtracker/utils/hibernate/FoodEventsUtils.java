@@ -39,4 +39,30 @@ public class FoodEventsUtils {
 			factory.close();
 		}
 	}
+	
+	public static FoodEatingEvent getFoodEventById(int fevId) {
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(FoodEatingEvent.class)
+				.buildSessionFactory();
+
+		Session session = factory.getCurrentSession();
+		try {
+
+			session.beginTransaction();
+
+			FoodEatingEvent fev = session.get(FoodEatingEvent.class, fevId);
+			
+			session.getTransaction().commit();
+
+			System.out.println("updated");
+			
+			return fev;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			session.close();
+			factory.close();
+		}
+	}
 }
