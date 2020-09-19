@@ -24,9 +24,9 @@ public class HibernateCreateFEV {
 			
 			User testUser = session.get(User.class, 1);
 			Date now = new Date();
-			FoodEatingEvent fev1 = new FoodEatingEvent("pizza",200,now,now);
+			FoodEatingEvent fev1 = new FoodEatingEvent("pizza",200,now,now,"food");
 			now = new Date();
-			FoodEatingEvent fev2 = new FoodEatingEvent("ice-cream",400,now,now);
+			FoodEatingEvent fev2 = new FoodEatingEvent("ice-cream",400,now,now,"food");
 			
 			testUser.addFoodEatingEvent(fev1);
 			testUser.addFoodEatingEvent(fev2);

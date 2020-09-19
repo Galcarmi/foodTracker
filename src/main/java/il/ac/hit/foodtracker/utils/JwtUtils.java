@@ -5,7 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
+import il.ac.hit.foodtracker.model.CurrentUser;
 
 public class JwtUtils {
 
@@ -28,16 +28,14 @@ public class JwtUtils {
 		return jws;
 	}
 
-	public static HashMap<String, String> getJwtDetails(String jwt) {
+	public static CurrentUser getJwtDetails(String jwt) {
 		String username = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody()
 				.getSubject();
 		String userId = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody().getIssuer();
 
-		HashMap<String, String> userDetails = new HashMap<String, String>();
-		userDetails.put("username", username);
-		userDetails.put("userId", userId);
+		CurrentUser currentUser = new CurrentUser (false,userId,username);
 
-		return userDetails;
+		return currentUser;
 	}
 
 	public static void main(String[] args) {
@@ -45,7 +43,6 @@ public class JwtUtils {
 		String jwt = JwtUtils.createJWT("gal", "2");
 
 		System.out.println(jwt);
-		JwtUtils.getJwtDetails(jwt);
 
 	}
 

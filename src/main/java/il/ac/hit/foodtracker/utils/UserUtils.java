@@ -1,12 +1,10 @@
 package il.ac.hit.foodtracker.utils;
 
 import java.util.Date;
-import java.util.HashMap;
 import org.hibernate.exception.ConstraintViolationException;
 import javax.ws.rs.NotAuthorizedException;
-
 import il.ac.hit.foodtracker.model.User;
-import il.ac.hit.foodtracker.model.VerifyUserLoggedInResult;
+import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
 public class UserUtils {
@@ -34,23 +32,24 @@ public class UserUtils {
 
 	}
 
-	public static VerifyUserLoggedInResult verifyUserLoggedIn(String jwt) {
-		HashMap<String, String> userDetails = JwtUtils.getJwtDetails(jwt);
-		String userId = userDetails.get("userId");
-		String username = userDetails.get("username");
-		boolean verified = false;
-
+	public static CurrentUser verifyUserLoggedIn(String jwt) {
+		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
+	
 		try {
-			User userFromJwt = UserUtilsHibernate.getUserById(Integer.parseInt(userId));
-			if (userFromJwt.getId() == Integer.parseInt(userId) && userFromJwt.getUsername().equals(username)) {
-				verified = true;
+			int userId = currentUser.getId();
+			String username = currentUser.getUsername();
+			User userFromJwt = UserUtilsHibernate.getUserById(userId);
+			//TODO change id to integer class
+		
+			if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
+				currentUser.setVerified(true);
 			}
 
-			return new VerifyUserLoggedInResult(userDetails, verified);
+			return currentUser;
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			return new VerifyUserLoggedInResult(null, false);
+			return currentUser;
 		}
 	}
 

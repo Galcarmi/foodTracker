@@ -6,7 +6,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
-import il.ac.hit.foodtracker.model.VerifyUserLoggedInResult;
+import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 @AuthFilter
@@ -22,11 +22,11 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 			}
 
 			String token = parseToken(authHeader);
-			VerifyUserLoggedInResult verifyResult = verifyToken(token);
+			CurrentUser verifyResult = verifyToken(token);
 			if (!verifyResult.isVerified()) {
 				WebApplicationErrorThrower.throwError("Bearer error=\"invalid_token\"");
 			} else {
-				crc.setProperty("username", verifyResult.getJwtUserDetails().get("username"));
+				crc.setProperty("verifyResult", verifyResult);
 			}
 
 		} catch (AuthVerifyException e) {
@@ -48,7 +48,7 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 		return tokenHeader[1];
 	}
 
-	private VerifyUserLoggedInResult verifyToken(String token) {
+	private CurrentUser verifyToken(String token) {
 
 		return UserUtils.verifyUserLoggedIn(token);
 	}

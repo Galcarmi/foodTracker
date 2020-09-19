@@ -24,6 +24,9 @@ public class FoodEatingEvent {
 	@Column(name="name")
 	private String name;
 	
+	@Column(name="category")
+	private String category;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private User user;
@@ -42,12 +45,13 @@ public class FoodEatingEvent {
 		super();
 	}
 
-	public FoodEatingEvent(String name, int calory, Date created_date, Date update_date) {
+	public FoodEatingEvent(String name, int calory, Date created_date, Date update_date,String category) {
 		super();
 		setName(name);
 		setCalory(calory);
 		setCreated_date(created_date);
 		setUpdate_date(update_date);
+		setCategory(category);
 	}
 
 	public int getId() {
@@ -96,6 +100,14 @@ public class FoodEatingEvent {
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 
