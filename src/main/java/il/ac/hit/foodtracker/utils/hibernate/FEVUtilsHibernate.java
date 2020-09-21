@@ -109,9 +109,4 @@ public class FEVUtilsHibernate {
 			factory.close();
 		}
 	}
-	
-	public static void main(String[] args) {
-		System.out.println("start");
-		getAllEventForTimeRange("weekly");
-	}
 }

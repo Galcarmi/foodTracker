@@ -19,26 +19,26 @@ public class FoodEatingEvent {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int m_Id;
+	private int id;
 	
 	@Column(name="name")
-	private String m_Name;
+	private String name;
 	
 	@Column(name="category")
-	private String m_Category;
+	private String category;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id")
-	private User m_User;
+	private User user;
 	
 	@Column(name="calory")
-	private int m_Calory;
+	private int calory;
 	
 	@Column(name="created_date")
-	private Date m_Created_date;
+	private Date created_date;
 
 	@Column(name="update_date")
-	private Date m_Update_date;
+	private Date update_date;
 
 	
 	public FoodEatingEvent() {
@@ -55,59 +55,59 @@ public class FoodEatingEvent {
 	}
 
 	public int getId() {
-		return m_Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.m_Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return m_Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.m_Name = name;
+		this.name = name;
 	}
 
 	public User getUser() {
-		return m_User;
+		return user;
 	}
 
 	public void setUser(User user) {
-		this.m_User = user;
+		this.user = user;
 	}
 
 	public int getCalory() {
-		return m_Calory;
+		return calory;
 	}
 
 	public void setCalory(int calory) {
-		this.m_Calory = calory;
+		this.calory = calory;
 	}
 
 	public Date getCreated_date() {
-		return m_Created_date;
+		return created_date;
 	}
 
 	public void setCreated_date(Date created_date) {
-		this.m_Created_date = created_date;
+		this.created_date = created_date;
 	}
 
 	public Date getUpdate_date() {
-		return m_Update_date;
+		return update_date;
 	}
 
 	public void setUpdate_date(Date update_date) {
-		this.m_Update_date = update_date;
+		this.update_date = update_date;
 	}
 
 	public String getCategory() {
-		return m_Category;
+		return category;
 	}
 
 	public void setCategory(String category) {
-		this.m_Category = category;
+		this.category = category;
 	}
 
 	@Override

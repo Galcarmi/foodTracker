@@ -1,15 +1,12 @@
 package il.ac.hit.foodtracker.utils.hibernate;
 
 import java.text.MessageFormat;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
-
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
-import il.ac.hit.foodtracker.utils.UserUtils;
 
 public class UserUtilsHibernate {
 
@@ -73,10 +70,10 @@ public class UserUtilsHibernate {
 
 			session.beginTransaction();
 
-			Object[] params = new Object[] {username};
+			Object[] params = new Object[] { username };
 			String query = MessageFormat.format("from User as user where user.username = ''{0}''", params);
-			User userToReturn = (User) session.createQuery(query)
-					.getSingleResult();
+
+			User userToReturn = (User) session.createQuery(query).getSingleResult();
 			session.getTransaction().commit();
 
 			return userToReturn;
@@ -88,15 +85,6 @@ public class UserUtilsHibernate {
 			factory.close();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		try {
-			UserUtils.registerUser("gal", "555");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

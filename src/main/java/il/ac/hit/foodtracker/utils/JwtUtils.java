@@ -37,13 +37,4 @@ public class JwtUtils {
 
 		return currentUser;
 	}
-
-	public static void main(String[] args) {
-
-		String jwt = JwtUtils.createJWT("gal", "2");
-
-		System.out.println(jwt);
-
-	}
-
 }

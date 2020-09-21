@@ -26,11 +26,11 @@ public class Register {
 
 			return Response.status(Status.OK).entity(token).build();
 		} catch (ConstraintViolationException e) {
+			
 			return Response.status(Status.UNAUTHORIZED).entity("user already exists").build();
 		} catch (Exception e) {
+			
 			return Response.status(Status.UNAUTHORIZED).entity("register failed").build();
 		}
-
 	}
-
 }
