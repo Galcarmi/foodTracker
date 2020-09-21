@@ -12,7 +12,7 @@ import java.text.MessageFormat;
 
 public class FEVUtilsHibernate {
 
-	public static void addFoodEvent(FoodEatingEvent fev, int userId) throws Exception {
+	public static void addFoodEvent(FoodEatingEvent fev, Integer userId) throws Exception {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class)
 				.buildSessionFactory();
@@ -29,7 +29,8 @@ public class FEVUtilsHibernate {
 			fev.setUpdate_date(now);
 			userToUpdate.addFoodEatingEvent(fev);
 			session.save(fev);
-//TODO check for null values from user
+
+			
 			session.getTransaction().commit();
 
 			System.out.println("updated");

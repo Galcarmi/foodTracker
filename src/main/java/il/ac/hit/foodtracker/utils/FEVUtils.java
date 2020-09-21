@@ -2,6 +2,7 @@ package il.ac.hit.foodtracker.utils;
 
 import java.util.List;
 
+import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.utils.hibernate.FEVUtilsHibernate;
@@ -27,7 +28,8 @@ public class FEVUtils {
 		return FEVUtilsHibernate.getFoodEventById(Integer.parseInt(foodEventId));
 	}
 	
-	public static void addFoodEatingEvent(FoodEatingEvent fev, CurrentUser currentUser) throws Exception {
+	public static void addFoodEatingEvent(FoodEatingEvent fev, CurrentUser currentUser) throws AuthVerifyException,Exception {
+		fev.validateAllRequiredFields();
 		FEVUtilsHibernate.addFoodEvent(fev, currentUser.getId());
 	}
 }

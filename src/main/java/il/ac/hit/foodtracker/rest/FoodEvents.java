@@ -15,6 +15,8 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
@@ -63,7 +65,11 @@ public class FoodEvents {
 			FEVUtils.addFoodEatingEvent(fev, currentUser);
 			
 			return Response.status(Status.OK).entity("food event added").build();
-		} catch (Exception e) {
+		}catch (AuthVerifyException e) {
+			
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}	
+		catch (Exception e) {
 			e.printStackTrace();
 			
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

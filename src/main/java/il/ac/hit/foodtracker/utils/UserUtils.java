@@ -12,6 +12,7 @@ public class UserUtils {
 	public static String registerUser(String username, String password) throws ConstraintViolationException, Exception {
 
 		try {
+			///validation checks on the username and password
 			if (username == null || password == null) {
 				throw new Exception("username or password can't be null");
 			}
@@ -19,11 +20,12 @@ public class UserUtils {
 			Date registrationDate = new Date();
 
 			User user = new User(username, password, registrationDate);
-
-			Integer userId = user.getId();
-			String token = JwtUtils.createJWT(username, userId.toString());
-
 			UserUtilsHibernate.createUser(user);
+			
+			Integer userId = user.getId();
+			String token = JwtUtils.createJWT(username, userId);
+
+			
 
 			return token;
 		} catch (Exception e) {
@@ -36,10 +38,9 @@ public class UserUtils {
 		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
 	
 		try {
-			int userId = currentUser.getId();
+			Integer userId = currentUser.getId();
 			String username = currentUser.getUsername();
 			User userFromJwt = UserUtilsHibernate.getUserById(userId);
-			//TODO change id to integer class
 		
 			if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
 				currentUser.setVerified(true);
@@ -60,7 +61,7 @@ public class UserUtils {
 			throw new NotAuthorizedException("not authorized");
 		}
 
-		String token = JwtUtils.createJWT(userFromDB.getUsername(), userFromDB.getId() + "");
+		String token = JwtUtils.createJWT(userFromDB.getUsername(), userFromDB.getId());
 
 		return token;
 	}

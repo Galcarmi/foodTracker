@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
+
 @Entity
 @Table(name = "food_eating_event")
 public class FoodEatingEvent {
@@ -19,7 +21,7 @@ public class FoodEatingEvent {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name="name")
 	private String name;
@@ -32,7 +34,7 @@ public class FoodEatingEvent {
 	private User user;
 	
 	@Column(name="calory")
-	private int calory;
+	private Integer calory;
 	
 	@Column(name="created_date")
 	private Date created_date;
@@ -45,7 +47,7 @@ public class FoodEatingEvent {
 		super();
 	}
 
-	public FoodEatingEvent(String i_Name, int i_Calory, Date i_Created_date, Date i_Update_date,String i_Category) {
+	public FoodEatingEvent(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,String i_Category) {
 		super();
 		setName(i_Name);
 		setCalory(i_Calory);
@@ -54,11 +56,11 @@ public class FoodEatingEvent {
 		setCategory(i_Category);
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -78,11 +80,11 @@ public class FoodEatingEvent {
 		this.user = user;
 	}
 
-	public int getCalory() {
+	public Integer getCalory() {
 		return calory;
 	}
 
-	public void setCalory(int calory) {
+	public void setCalory(Integer calory) {
 		this.calory = calory;
 	}
 
@@ -120,6 +122,12 @@ public class FoodEatingEvent {
 		FoodEatingEvent fevToReturn = new FoodEatingEvent( name,  calory,  created_date,  update_date, category);
 		fevToReturn.setId(id);
 		return fevToReturn;
+	}
+	
+	public void validateAllRequiredFields() throws AuthVerifyException {
+		if(this.calory == null || this.name =="null" || this.category == null) {
+			throw new AuthVerifyException("please enter full food eating event data (name,category,calory)");
+		}
 	}
 	
 

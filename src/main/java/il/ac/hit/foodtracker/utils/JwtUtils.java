@@ -20,10 +20,10 @@ public class JwtUtils {
 		return key;
 	}
 
-	public static String createJWT(String username, String id) {
+	public static String createJWT(String username, Integer id) {
 		Date tommorow = DateUtils.getTommorowDate();
 
-		String jws = Jwts.builder().setSubject(username).setIssuer(id).signWith(getKey()).setExpiration(tommorow)
+		String jws = Jwts.builder().setSubject(username).setIssuer(id.toString()).signWith(getKey()).setExpiration(tommorow)
 				.compact();
 		return jws;
 	}
@@ -33,7 +33,7 @@ public class JwtUtils {
 				.getSubject();
 		String userId = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody().getIssuer();
 
-		CurrentUser currentUser = new CurrentUser (false,userId,username);
+		CurrentUser currentUser = new CurrentUser (false,Integer.parseInt(userId),username);
 
 		return currentUser;
 	}

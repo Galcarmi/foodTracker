@@ -23,7 +23,7 @@ public class Register {
 			String password = user.getPassword();
 
 			String token = UserUtils.registerUser(username, password);
-
+			
 			return Response.status(Status.OK).entity(token).build();
 		} catch (ConstraintViolationException e) {
 			
