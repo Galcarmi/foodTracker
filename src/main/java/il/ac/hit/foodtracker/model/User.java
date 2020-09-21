@@ -12,7 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+/**
+ * User hibernate class - annotated class for hibernate - represents sql table
+ * @author Carmi
+ *
+ */
 @Entity
 @Table(name = "user")
 public class User {
@@ -86,6 +90,10 @@ public class User {
 		this.eatingEvents = eatingEvents;
 	}
 
+	/**
+	 * a convenient method to add a FoodEatingEvent to a specific user
+	 * @param fev food eating event to add
+	 */
 	public void addFoodEatingEvent(FoodEatingEvent fev) {
 		if (this.eatingEvents == null) {
 			this.eatingEvents = new ArrayList<>();

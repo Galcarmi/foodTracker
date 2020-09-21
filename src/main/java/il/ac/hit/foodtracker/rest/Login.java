@@ -10,6 +10,11 @@ import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
+/**
+ * jersey route class for /rest/login
+ * @author Carmi
+ *
+ */
 @Path("/login")
 public class Login {
 

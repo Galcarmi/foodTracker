@@ -7,8 +7,21 @@ import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
+/**
+ * user utils class
+ * @author Carmi
+ *
+ */
 public class UserUtils {
 
+	/**
+	 * register a user
+	 * @param username username
+	 * @param password password
+	 * @return String jwt token 
+	 * @throws ConstraintViolationException constraintViolationException
+	 * @throws Exception exception
+	 */
 	public static String registerUser(String username, String password) throws ConstraintViolationException, Exception {
 
 		try {
@@ -34,6 +47,11 @@ public class UserUtils {
 
 	}
 
+	/**
+	 * verify the jwt token of the user
+	 * @param jwt jwt token
+	 * @return CurrentUser current logged in user
+	 */
 	public static CurrentUser verifyUserLoggedIn(String jwt) {
 		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
 	
@@ -54,7 +72,13 @@ public class UserUtils {
 		}
 	}
 
-	public static String verifyUserLogin(User user) throws Exception {
+	/**
+	 * verifies the username and the password of a user in the DB
+	 * @param user the user details
+	 * @return String jwt token
+	 * @throws Exception exception
+	 */
+	public static String verifyUserLogin(User user) throws NotAuthorizedException,Exception {
 
 		User userFromDB = UserUtilsHibernate.getUserByUsername(user.getUsername());
 		if (!user.getPassword().equals(userFromDB.getPassword())) {

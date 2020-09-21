@@ -8,8 +8,19 @@ import org.hibernate.exception.ConstraintViolationException;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
 
+/**
+ * user utils hibernate class
+ * @author Carmi
+ *
+ */
 public class UserUtilsHibernate {
 
+	/**
+	 * create user with hibernate
+	 * @param user the user details
+	 * @throws ConstraintViolationException constraintViolationException
+	 * @throws Exception exception
+	 */
 	public static void createUser(User user) throws ConstraintViolationException, Exception {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
@@ -33,6 +44,12 @@ public class UserUtilsHibernate {
 		}
 	}
 
+	/**
+	 * get user by id with hibernate
+	 * @param id user id
+	 * @return User user matching to the id
+	 * @throws Exception exception
+	 */
 	public static User getUserById(int id) throws Exception {
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
@@ -59,6 +76,12 @@ public class UserUtilsHibernate {
 
 	}
 
+	/**
+	 * get user by username with hibernate
+	 * @param username username
+	 * @return User user matching to the username
+	 * @throws Exception exception
+	 */
 	public static User getUserByUsername(String username) throws Exception {
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)

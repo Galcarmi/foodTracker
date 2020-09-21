@@ -14,6 +14,11 @@ import javax.persistence.Table;
 
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 
+/**
+ * FoodEatingEvent hibernate class - annotated class for hibernate - represents sql table
+ * @author Carmi
+ *
+ */
 @Entity
 @Table(name = "food_eating_event")
 public class FoodEatingEvent {
@@ -118,12 +123,20 @@ public class FoodEatingEvent {
 				+ ", calory=" + calory + ", created_date=" + created_date + ", update_date=" + update_date + "]";
 	}
 
+	/**
+	 * get only the necessary fields for food eating event response
+	 * @return FoodEatingEvent foodEatingEvent
+	 */
 	public FoodEatingEvent getFoodEatingEventResponse() {
 		FoodEatingEvent fevToReturn = new FoodEatingEvent( name,  calory,  created_date,  update_date, category);
 		fevToReturn.setId(id);
 		return fevToReturn;
 	}
 	
+	/**
+	 * validates if all the required fields are exist
+	 * @throws AuthVerifyException authVerifyException
+	 */
 	public void validateAllRequiredFields() throws AuthVerifyException {
 		if(this.calory == null || this.name =="null" || this.category == null) {
 			throw new AuthVerifyException("please enter full food eating event data (name,category,calory)");

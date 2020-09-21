@@ -10,8 +10,19 @@ import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.DateUtils;
 import java.text.MessageFormat;
 
+/**
+ * food eating events hibernate utils class
+ * @author Carmi
+ *
+ */
 public class FEVUtilsHibernate {
 
+	/**
+	 * add food eating event with hibernate
+	 * @param fev foodeatingevent too add
+	 * @param userId the user id
+	 * @throws Exception exception
+	 */
 	public static void addFoodEvent(FoodEatingEvent fev, Integer userId) throws Exception {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class)
@@ -43,6 +54,11 @@ public class FEVUtilsHibernate {
 		}
 	}
 	
+	/**
+	 * get food eating event by id with hibernate
+	 * @param fevId food eating event id
+	 * @return FoodEatingEvent returns matching food eating event to the id
+	 */
 	public static FoodEatingEvent getFoodEventById(int fevId) {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class)
@@ -67,6 +83,11 @@ public class FEVUtilsHibernate {
 		}
 	}
 	
+	/**
+	 * get all food eating event between timerange with hibernate
+	 * @param timeRange timerange (weekly,monthly)
+	 * @return List food eating events list
+	 */
 	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange){
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class)

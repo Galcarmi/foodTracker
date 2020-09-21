@@ -22,6 +22,11 @@ import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
 import il.ac.hit.foodtracker.utils.FEVUtils;
 
+/**
+ * jersey route class for /rest/foodevents
+ * @author Carmi
+ *
+ */
 @Path("/foodevents")
 public class FoodEvents {
 
@@ -67,7 +72,7 @@ public class FoodEvents {
 			return Response.status(Status.OK).entity("food event added").build();
 		}catch (AuthVerifyException e) {
 			
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}	
 		catch (Exception e) {
 			e.printStackTrace();
