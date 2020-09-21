@@ -110,7 +110,17 @@ public class FoodEatingEvent {
 		this.m_Category = category;
 	}
 
+	@Override
+	public String toString() {
+		return "FoodEatingEvent [id=" + id + ", name=" + name + ", category=" + category + ", user=" + user
+				+ ", calory=" + calory + ", created_date=" + created_date + ", update_date=" + update_date + "]";
+	}
 
+	public FoodEatingEvent getFoodEatingEventResponse() {
+		FoodEatingEvent fevToReturn = new FoodEatingEvent( name,  calory,  created_date,  update_date, category);
+		fevToReturn.setId(id);
+		return fevToReturn;
+	}
 	
 
 }

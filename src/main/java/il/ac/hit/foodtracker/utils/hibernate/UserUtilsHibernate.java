@@ -1,5 +1,7 @@
 package il.ac.hit.foodtracker.utils.hibernate;
 
+import java.text.MessageFormat;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -71,7 +73,9 @@ public class UserUtilsHibernate {
 
 			session.beginTransaction();
 
-			User userToReturn = (User) session.createQuery("from User as user where user.username ='" + username + "'")
+			Object[] params = new Object[] {username};
+			String query = MessageFormat.format("from User as user where user.username = ''{0}''", params);
+			User userToReturn = (User) session.createQuery(query)
 					.getSingleResult();
 			session.getTransaction().commit();
 

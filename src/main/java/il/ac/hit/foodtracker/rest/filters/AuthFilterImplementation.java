@@ -32,9 +32,6 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 		} catch (AuthVerifyException e) {
 			e.printStackTrace();
 			WebApplicationErrorThrower.throwError(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			WebApplicationErrorThrower.throwError("server error");
 		}
 	}
 

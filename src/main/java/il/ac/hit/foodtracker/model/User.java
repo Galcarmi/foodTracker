@@ -20,16 +20,16 @@ public class User {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int m_Id;
+	private int id;
 
 	@Column(name = "username", unique = true)
-	private String m_Username;
+	private String username;
 
 	@Column(name = "password")
-	private String m_Password;
+	private String password;
 
 	@Column(name = "created_date")
-	private Date m_Created_date;
+	private Date created_date;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
@@ -39,43 +39,43 @@ public class User {
 		super();
 	}
 
-	public User(String i_Username, String i_Password, Date i_Created_date) {
+	public User(String username, String password, Date created_date) {
 		super();
-		setPassword(i_Password);
-		setUsername(i_Username);
-		setCreated_date(i_Created_date);
+		setPassword(password);
+		setUsername(username);
+		setCreated_date(created_date);
 	}
 
 	public int getId() {
-		return m_Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.m_Id = id;
+		this.id = id;
 	}
 
 	public String getUsername() {
-		return m_Username;
+		return username;
 	}
 
 	public void setUsername(String username) {
-		this.m_Username = username;
+		this.username = username;
 	}
 
 	public String getPassword() {
-		return m_Password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		this.m_Password = password;
+		this.password = password;
 	}
 
 	public Date getCreated_date() {
-		return m_Created_date;
+		return created_date;
 	}
 
 	public void setCreated_date(Date created_date) {
-		this.m_Created_date = created_date;
+		this.created_date = created_date;
 	}
 
 	public List<FoodEatingEvent> getEatingEvents() {
@@ -98,7 +98,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + m_Id + ", username=" + m_Username + ", password=" + m_Password + ", created_date=" + m_Created_date
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", created_date=" + created_date
 				+ ", eatingEvents=" + eatingEvents + "]";
 	}
 
