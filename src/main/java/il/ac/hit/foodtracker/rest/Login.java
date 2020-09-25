@@ -12,11 +12,14 @@ import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
  * jersey route class for /rest/login
+ * 
  * @author Carmi
  *
  */
 @Path("/login")
 public class Login {
+	Status status;
+	Object message;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -24,16 +27,15 @@ public class Login {
 	public Response login(User user) {
 		try {
 			String token = UserUtils.verifyUserLogin(user);
+			message = token;
+			status = Status.OK;
+		} catch (Exception e) {
+			message = "login failed";
+			status = Status.UNAUTHORIZED;
 			
-			return Response.status(Status.OK)
-		               .entity(token)
-		               .build();
+			e.printStackTrace();
 		}
-		catch(Exception e) {
-			
-			return Response.status(Status.UNAUTHORIZED).entity("login failed").build();
-		}
-		
+
+		return Response.status(status).entity(message).build();
 	}
-	
 }

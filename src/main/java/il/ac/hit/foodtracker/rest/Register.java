@@ -13,6 +13,7 @@ import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
  * jersey route class for /rest/register
+ * 
  * @author Carmi
  *
  */
@@ -23,19 +24,27 @@ public class Register {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response register(User user) {
+		Status status;
+		Object message;
 		try {
 			String username = user.getUsername();
 			String password = user.getPassword();
-
 			String token = UserUtils.registerUser(username, password);
-			
-			return Response.status(Status.OK).entity(token).build();
+
+			status = Status.OK;
+			message = token;
+
 		} catch (ConstraintViolationException e) {
-			
-			return Response.status(Status.UNAUTHORIZED).entity("user already exists").build();
+			e.printStackTrace();
+			status = Status.UNAUTHORIZED;
+			message = "user already exists";
 		} catch (Exception e) {
-			
-			return Response.status(Status.UNAUTHORIZED).entity("register failed").build();
+			e.printStackTrace();
+			status = Status.UNAUTHORIZED;
+			message = "register failed";
 		}
+
+		return Response.status(status).entity(message).build();
+
 	}
 }

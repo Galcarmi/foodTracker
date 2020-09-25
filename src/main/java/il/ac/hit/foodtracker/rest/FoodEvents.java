@@ -46,17 +46,20 @@ public class FoodEvents {
 	@AuthFilter
 	@Path("/{foodEventId}")
 	public Response viewFoodEvent(@PathParam("foodEventId") String foodEventId) {
+		Status status;
+		Object message;
 		try {
 			FoodEatingEvent fev = FEVUtils.getFoodEventById(foodEventId);
-			
-			return Response.status(Status.OK).entity(fev.getFoodEatingEventResponse()).build();
+			status = Status.OK;
+			message = fev.getFoodEatingEventResponse();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			
-			return Response.status(Status.OK).entity("server error").build();
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = "server error";
 		}
 		
+		return Response.status(status).entity(message).build();
 	}
 
 	@POST
@@ -66,19 +69,22 @@ public class FoodEvents {
 	@Path("/new")
 	public Response addFoodEvent(FoodEatingEvent fev,@Context ContainerRequestContext crc) {
 		CurrentUser currentUser = (CurrentUser)crc.getProperty("verifyResult");
+		Status status;
+		Object message;
 		try {
 			FEVUtils.addFoodEatingEvent(fev, currentUser);
-			
-			return Response.status(Status.OK).entity("food event added").build();
+			status = Status.OK;
+			message = "food event added";
 		}catch (AuthVerifyException e) {
-			
-			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+			status = Status.BAD_REQUEST;
+			message = e.getMessage();
 		}	
 		catch (Exception e) {
 			e.printStackTrace();
-			
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = e.getMessage();
 		}
+		
+		return Response.status(status).entity(message).build();
 	}
-
 }
