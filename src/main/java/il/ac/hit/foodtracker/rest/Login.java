@@ -23,7 +23,7 @@ public class Login {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
 		try {
 			String token = UserUtils.verifyUserLogin(user);
