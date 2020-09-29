@@ -7,6 +7,7 @@ package il.ac.hit.foodtracker.utils;
  */
 public class ServerConstants {
 
+	//should be stored as environment variable
 	public static final String SECRET_KEY = "myyyamazingsecretkeyyyjavaisthebestttilikeservletsandjersey";
 	
 }

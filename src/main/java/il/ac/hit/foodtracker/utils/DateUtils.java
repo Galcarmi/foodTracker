@@ -52,20 +52,20 @@ public class DateUtils {
 		 * get string that represents a minute after the end of the month
 		 * @return Date end of the month date
 		 */
-	public static String getEndOfTheMonth() {
+	public static String getEndOfTheDay() {
 		DateTime now = new DateTime();
 		
 		
-		return DateUtils.dateFormet.print(now.dayOfMonth().roundCeilingCopy().dayOfMonth().withMaximumValue().plusDays(1));
+		return DateUtils.dateFormet.print(now.dayOfWeek().roundCeilingCopy().plusMillis(1));
 	}
 	
 	/**
 	 * get string that represents a minute before the start of the week
 	 * @return Date start of the month date
 	 */
-	public static String getStartOfTheMonth() {
+	public static String getStartOfTheDay() {
 		DateTime now = new DateTime();
 		
-		return DateUtils.dateFormet.print(now.dayOfMonth().withMinimumValue().dayOfWeek().roundFloorCopy().minusSeconds(1));
+		return DateUtils.dateFormet.print(now.dayOfWeek().roundFloorCopy().minusMillis(1));
 	}
 }

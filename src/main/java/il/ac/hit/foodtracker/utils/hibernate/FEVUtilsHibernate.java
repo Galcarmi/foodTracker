@@ -106,8 +106,8 @@ public class FEVUtilsHibernate {
 				dtToCheckEnd = DateUtils.getEndOfTheWeek();	
 			}
 			else {
-				dtToCheckStart = DateUtils.getStartOfTheMonth();
-				dtToCheckEnd = DateUtils.getEndOfTheMonth();
+				dtToCheckStart = DateUtils.getStartOfTheDay();
+				dtToCheckEnd = DateUtils.getEndOfTheDay();
 			}
 			
 			Object[] params = new Object[] {dtToCheckStart,dtToCheckEnd};

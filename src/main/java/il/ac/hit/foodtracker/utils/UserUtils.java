@@ -53,13 +53,16 @@ public class UserUtils {
 	 * @return CurrentUser current logged in user
 	 */
 	public static CurrentUser verifyUserLoggedIn(String jwt) {
+		///get user details from jwt
 		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
 	
 		try {
+			///get user details
 			Integer userId = currentUser.getId();
 			String username = currentUser.getUsername();
 			User userFromJwt = UserUtilsHibernate.getUserById(userId);
 		
+			///check if the user from jwt is equals to the user from the userid
 			if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
 				currentUser.setVerified(true);
 			}

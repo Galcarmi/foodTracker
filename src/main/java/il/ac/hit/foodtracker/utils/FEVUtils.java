@@ -22,8 +22,8 @@ public class FEVUtils {
 	public static List<FoodEatingEvent> getEventsByTimeRange(String timeRange){
 		
 		String timeRangeToCheck;
-		
-		if(timeRange != null && (timeRange.equals("weekly") || timeRange.equals("monthly"))) {
+		///check if timerange exists and set it to weekly by default
+		if(timeRange != null && (timeRange.equals("weekly") || timeRange.equals("daily"))) {
 			timeRangeToCheck = timeRange;
 		}
 		else {
