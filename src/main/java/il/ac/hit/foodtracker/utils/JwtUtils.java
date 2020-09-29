@@ -13,6 +13,7 @@ public class JwtUtils {
 
 	/**
 	 * get a key representation of our secret key stored inside server constants
+	 * 
 	 * @return Key key
 	 */
 	private static Key getKey() {
@@ -26,20 +27,22 @@ public class JwtUtils {
 
 	/**
 	 * create jwt token
+	 * 
 	 * @param username username
-	 * @param id id
+	 * @param id       id
 	 * @return String jwt token
 	 */
 	public static String createJWT(String username, Integer id) {
 		Date tommorow = DateUtils.getTommorowDate();
 
-		String jws = Jwts.builder().setSubject(username).setIssuer(id.toString()).signWith(getKey()).setExpiration(tommorow)
-				.compact();
+		String jws = Jwts.builder().setSubject(username).setIssuer(id.toString()).signWith(getKey())
+				.setExpiration(tommorow).compact();
 		return jws;
 	}
 
 	/**
 	 * get jwt details after decoding
+	 * 
 	 * @param jwt jwt
 	 * @return CurrentUser current user details
 	 */
@@ -48,7 +51,7 @@ public class JwtUtils {
 				.getSubject();
 		String userId = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody().getIssuer();
 
-		CurrentUser currentUser = new CurrentUser (false,Integer.parseInt(userId),username);
+		CurrentUser currentUser = new CurrentUser(false, Integer.parseInt(userId), username);
 
 		return currentUser;
 	}

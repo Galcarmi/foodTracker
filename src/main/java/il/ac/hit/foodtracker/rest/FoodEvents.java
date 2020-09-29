@@ -20,10 +20,13 @@ import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.FEVUtils;
+import il.ac.hit.foodtracker.utils.ServerConstants;
 
 /**
  * jersey route class for /rest/foodevents
+ * 
  * @author Carmi
  *
  */
@@ -34,10 +37,12 @@ public class FoodEvents {
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/")
-	public Response viewFoodEvents(@Context ContainerRequestContext crc, @DefaultValue("weekly") @QueryParam("timerange") String timeRange) {
+	public Response viewFoodEvents(@Context ContainerRequestContext crc,
+			@DefaultValue(ServerConstants.TimeRangeConstants.WEEKLY) @QueryParam("timerange") String timeRange) {
 		List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
-		GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {};
-		
+		GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
+		};
+
 		return Response.status(Status.OK).entity(entity).build();
 	}
 
@@ -52,13 +57,12 @@ public class FoodEvents {
 			FoodEatingEvent fev = FEVUtils.getFoodEventById(foodEventId);
 			status = Status.OK;
 			message = fev.getFoodEatingEventResponse();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			ErrorUtils.printPrettyError(e, "viewFoodEvent");
 			status = Status.INTERNAL_SERVER_ERROR;
 			message = "server error";
 		}
-		
+
 		return Response.status(status).entity(message).build();
 	}
 
@@ -67,24 +71,24 @@ public class FoodEvents {
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/new")
-	public Response addFoodEvent(FoodEatingEvent fev,@Context ContainerRequestContext crc) {
-		CurrentUser currentUser = (CurrentUser)crc.getProperty("verifyResult");
+	public Response addFoodEvent(FoodEatingEvent fev, @Context ContainerRequestContext crc) {
+		CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
 		Status status;
 		Object message;
 		try {
 			FEVUtils.addFoodEatingEvent(fev, currentUser);
 			status = Status.OK;
 			message = "food event added";
-		}catch (AuthVerifyException e) {
+		} catch (AuthVerifyException e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
 			status = Status.BAD_REQUEST;
 			message = e.getMessage();
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
 			status = Status.INTERNAL_SERVER_ERROR;
 			message = e.getMessage();
 		}
-		
+
 		return Response.status(status).entity(message).build();
 	}
 }

@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 public class WebApplicationErrorThrower {
 	/**
 	 * throw string error to the user
+	 * 
 	 * @param errorDescription errorDescription
 	 */
 	public static void throwError(String errorDescription) {

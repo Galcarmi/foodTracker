@@ -7,10 +7,13 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.model.CurrentUser;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
- * implements jersey filter - authenticate the user with a jwt token for each request
+ * implements jersey filter - authenticate the user with a jwt token for each
+ * request
+ * 
  * @author Carmi
  *
  */
@@ -20,6 +23,7 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 
 	/**
 	 * authenticate the user with a jwt token for each request
+	 * 
 	 * @param crc containerRequestContext
 	 * @throws IOException exception
 	 */
@@ -40,13 +44,14 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 			}
 
 		} catch (AuthVerifyException e) {
-			e.printStackTrace();
+			ErrorUtils.printPrettyError(e, "filter");
 			WebApplicationErrorThrower.throwError(e.getMessage());
 		}
 	}
 
 	/**
 	 * get the jwt header from the token
+	 * 
 	 * @param header the authentication header
 	 * @return the jwt token
 	 * @throws AuthVerifyException authVerifyException
@@ -63,6 +68,7 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 
 	/**
 	 * verify the jwt token
+	 * 
 	 * @param token jwt token
 	 * @return CurrentUser current user that is logged in
 	 */

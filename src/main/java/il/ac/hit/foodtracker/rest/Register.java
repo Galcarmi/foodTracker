@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
@@ -35,11 +36,11 @@ public class Register {
 			message = token;
 
 		} catch (ConstraintViolationException e) {
-			e.printStackTrace();
+			ErrorUtils.printPrettyError(e, "register");
 			status = Status.UNAUTHORIZED;
 			message = "user already exists";
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorUtils.printPrettyError(e, "register");
 			status = Status.UNAUTHORIZED;
 			message = "register failed";
 		}

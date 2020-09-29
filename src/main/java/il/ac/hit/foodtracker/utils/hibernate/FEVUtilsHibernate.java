@@ -8,6 +8,8 @@ import org.hibernate.cfg.Configuration;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.DateUtils;
+import il.ac.hit.foodtracker.utils.ServerConstants;
+
 import java.text.MessageFormat;
 
 /**
@@ -60,6 +62,8 @@ public class FEVUtilsHibernate {
 	 * @return FoodEatingEvent returns matching food eating event to the id
 	 */
 	public static FoodEatingEvent getFoodEventById(int fevId) {
+		///creating hibernate session
+
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class)
 				.buildSessionFactory();
@@ -67,6 +71,7 @@ public class FEVUtilsHibernate {
 		Session session = factory.getCurrentSession();
 		try {
 
+			//get food event by id
 			session.beginTransaction();
 
 			FoodEatingEvent fev = session.get(FoodEatingEvent.class, fevId);
@@ -89,6 +94,7 @@ public class FEVUtilsHibernate {
 	 * @return List food eating events list
 	 */
 	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange){
+		///creating hibernate session
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class)
 				.buildSessionFactory();
@@ -100,8 +106,8 @@ public class FEVUtilsHibernate {
 			
 			String dtToCheckStart;
 			String dtToCheckEnd;
-			
-			if(timeRange == "weekly") {
+			///get date objects by timerange queryparam
+			if(timeRange == ServerConstants.TimeRangeConstants.WEEKLY) {
 				dtToCheckStart = DateUtils.getStartOfTheWeek();
 				dtToCheckEnd = DateUtils.getEndOfTheWeek();	
 			}
@@ -110,6 +116,7 @@ public class FEVUtilsHibernate {
 				dtToCheckEnd = DateUtils.getEndOfTheDay();
 			}
 			
+			///create hibernate HQL query
 			Object[] params = new Object[] {dtToCheckStart,dtToCheckEnd};
 			String query = MessageFormat.format("from FoodEatingEvent as fev where fev.created_date between ''{0}'' and ''{1}''", params);
 			

@@ -2,6 +2,7 @@ package il.ac.hit.foodtracker.exceptions;
 
 /**
  * AuthVerifyException class
+ * 
  * @author Carmi
  *
  */
@@ -11,6 +12,7 @@ public class AuthVerifyException extends Exception {
 
 	/**
 	 * this error will be thrown if there was a failure during jwt token validation
+	 * 
 	 * @param message error message
 	 * 
 	 */

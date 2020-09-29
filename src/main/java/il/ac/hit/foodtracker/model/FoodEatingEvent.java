@@ -15,44 +15,46 @@ import javax.persistence.Table;
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 
 /**
- * FoodEatingEvent hibernate class - annotated class for hibernate - represents sql table
+ * FoodEatingEvent hibernate class - annotated class for hibernate - represents
+ * sql table
+ * 
  * @author Carmi
  *
  */
 @Entity
 @Table(name = "food_eating_event")
 public class FoodEatingEvent {
-	
+
 	@Id
-	@Column(name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="category")
+
+	@Column(name = "category")
 	private String category;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
-	@Column(name="calory")
+
+	@Column(name = "calory")
 	private Integer calory;
-	
-	@Column(name="created_date")
+
+	@Column(name = "created_date")
 	private Date created_date;
 
-	@Column(name="update_date")
+	@Column(name = "update_date")
 	private Date update_date;
 
-	
 	public FoodEatingEvent() {
 		super();
 	}
 
-	public FoodEatingEvent(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,String i_Category) {
+	public FoodEatingEvent(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,
+			String i_Category) {
 		super();
 		setName(i_Name);
 		setCalory(i_Calory);
@@ -125,23 +127,24 @@ public class FoodEatingEvent {
 
 	/**
 	 * get only the necessary fields for food eating event response
+	 * 
 	 * @return FoodEatingEvent foodEatingEvent
 	 */
 	public FoodEatingEvent getFoodEatingEventResponse() {
-		FoodEatingEvent fevToReturn = new FoodEatingEvent( name,  calory,  created_date,  update_date, category);
+		FoodEatingEvent fevToReturn = new FoodEatingEvent(name, calory, created_date, update_date, category);
 		fevToReturn.setId(id);
 		return fevToReturn;
 	}
-	
+
 	/**
 	 * validates if all the required fields are exist
+	 * 
 	 * @throws AuthVerifyException authVerifyException
 	 */
 	public void validateAllRequiredFields() throws AuthVerifyException {
-		if(this.calory == null || this.name =="null" || this.category == null) {
+		if (this.calory == null || this.name == null || this.category == null) {
 			throw new AuthVerifyException("please enter full food eating event data (name,category,calory)");
 		}
 	}
-	
 
 }

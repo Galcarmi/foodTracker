@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
@@ -30,10 +31,9 @@ public class Login {
 			message = token;
 			status = Status.OK;
 		} catch (Exception e) {
+			ErrorUtils.printPrettyError(e, "login");
 			message = "login failed";
 			status = Status.UNAUTHORIZED;
-			
-			e.printStackTrace();
 		}
 
 		return Response.status(status).entity(message).build();
