@@ -19,13 +19,19 @@ import il.ac.hit.foodtracker.utils.UserUtils;
  */
 @Path("/login")
 public class Login {
-	Status status;
-	Object message;
 
+	/**
+	 * api path for login 
+	 * @param user User (checks only the username and password)
+	 * @return Response jwt token
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
+		Status status;
+		Object message;
+		
 		try {
 			String token = UserUtils.verifyUserLogin(user);
 			message = token;

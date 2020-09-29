@@ -33,6 +33,13 @@ import il.ac.hit.foodtracker.utils.ServerConstants;
 @Path("/foodevents")
 public class FoodEvents {
 
+	/**
+	 * api path for viewing all food events by timerange
+	 * 
+	 * @param crc       ContainerRequestContext
+	 * @param timeRange String
+	 * @return Response all the food events according to the time range
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
@@ -46,6 +53,12 @@ public class FoodEvents {
 		return Response.status(Status.OK).entity(entity).build();
 	}
 
+	/**
+	 * api path for viewing single food event by id
+	 * 
+	 * @param foodEventId foodEventId
+	 * @return Response food event
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
@@ -66,6 +79,13 @@ public class FoodEvents {
 		return Response.status(status).entity(message).build();
 	}
 
+	/**
+	 * api path for adding food event
+	 * 
+	 * @param fev FoodEatingEvent
+	 * @param crc ContainerRequestContext
+	 * @return Response the food eating event by id
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

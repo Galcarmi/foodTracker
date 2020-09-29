@@ -21,6 +21,12 @@ import il.ac.hit.foodtracker.utils.UserUtils;
 @Path("/register")
 public class Register {
 
+	/**
+	 * api path for register
+	 * 
+	 * @param user User
+	 * @return Response jwt token
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
