@@ -98,7 +98,6 @@ public class UserUtilsHibernate {
 
 			User userToReturn = (User) session.createQuery(query).getSingleResult();
 			session.getTransaction().commit();
-
 			return userToReturn;
 		} catch (Exception e) {
 			e.printStackTrace();
