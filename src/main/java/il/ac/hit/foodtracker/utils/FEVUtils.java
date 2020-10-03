@@ -21,17 +21,7 @@ public class FEVUtils {
 	 */
 	public static List<FoodEatingEvent> getEventsByTimeRange(String timeRange){
 		
-		String timeRangeToCheck;
-		/// check if timerange exists and set it to weekly by default
-		if(timeRange != null && (timeRange.equals(ServerConstants.TimeRangeConstants.WEEKLY) || 
-			timeRange.equals(ServerConstants.TimeRangeConstants.DAILY))) {
-			timeRangeToCheck = timeRange;
-		}
-		else {
-			timeRangeToCheck = ServerConstants.TimeRangeConstants.WEEKLY;
-		}
-		
-		return FEVUtilsHibernate.getAllEventForTimeRange(timeRangeToCheck);
+		return FEVUtilsHibernate.getAllEventForTimeRange(timeRange);
 	}
 	
 	/**

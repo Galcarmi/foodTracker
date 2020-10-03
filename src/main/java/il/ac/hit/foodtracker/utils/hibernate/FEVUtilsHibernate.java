@@ -107,7 +107,7 @@ public class FEVUtilsHibernate {
 			String dtToCheckStart;
 			String dtToCheckEnd;
 			/// get date objects by timerange queryparam
-			if (timeRange == ServerConstants.TimeRangeConstants.WEEKLY) {
+			if (timeRange.equals(ServerConstants.TimeRangeConstants.WEEKLY)) {
 				dtToCheckStart = DateUtils.getStartOfTheWeek();
 				dtToCheckEnd = DateUtils.getEndOfTheWeek();
 			} else {

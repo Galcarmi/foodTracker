@@ -46,6 +46,7 @@ public class FoodEvents {
 	@Path("/")
 	public Response viewFoodEvents(@Context ContainerRequestContext crc,
 			@DefaultValue(ServerConstants.TimeRangeConstants.WEEKLY) @QueryParam("timerange") String timeRange) {
+		System.out.println(timeRange);
 		List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
 		GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
 		};
