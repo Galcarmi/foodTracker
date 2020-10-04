@@ -7,6 +7,7 @@ import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
+
 /**
  * user utils class
  * 
@@ -57,23 +58,18 @@ public class UserUtils {
 		/// get user details from jwt
 		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
 
-		try {
-			/// get user details
-			Integer userId = currentUser.getId();
-			String username = currentUser.getUsername();
-			User userFromJwt = UserUtilsHibernate.getUserById(userId);
+		/// get user details
+		Integer userId = currentUser.getId();
+		String username = currentUser.getUsername();
+		User userFromJwt = UserUtilsHibernate.getUserById(userId);
 
-			/// check if the user from jwt is equals to the user from the userid
-			if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
-				currentUser.setVerified(true);
-			}
-
-			return currentUser;
-		} catch (Exception e) {
-			ErrorUtils.printPrettyError(e, "verifyUserLoggedIn");
-
-			return currentUser;
+		/// check if the user from jwt is equals to the user from the userid
+		if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
+			currentUser.setVerified(true);
 		}
+
+		return currentUser;
+
 	}
 
 	/**

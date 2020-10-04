@@ -1,12 +1,17 @@
 package il.ac.hit.foodtracker.utils;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import il.ac.hit.foodtracker.model.CurrentUser;
+import il.ac.hit.foodtracker.rest.filters.WebApplicationErrorThrower;
 
+@SuppressWarnings("deprecation")
 public class JwtUtils {
 
 	private static Key key;
@@ -46,13 +51,23 @@ public class JwtUtils {
 	 * @param jwt jwt
 	 * @return CurrentUser current user details
 	 */
+	/// TODO check jwt when it isnt valid, why it isnt catching the exception
 	public static CurrentUser getJwtDetails(String jwt) {
-		String username = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody()
-				.getSubject();
-		String userId = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody().getIssuer();
+		try {
 
-		CurrentUser currentUser = new CurrentUser(false, Integer.parseInt(userId), username);
+			String username = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody()
+					.getSubject();
+			String userId = Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt).getBody()
+					.getIssuer();
 
-		return currentUser;
+			CurrentUser currentUser = new CurrentUser(false, Integer.parseInt(userId), username);
+
+			return currentUser;
+		} catch (ExpiredJwtException | SignatureException | MalformedJwtException | IllegalArgumentException e) {
+			ErrorUtils.printPrettyError(e, "getJwtDetails");
+			WebApplicationErrorThrower.throwError(e.getMessage());
+			return null;
+		}
 	}
+
 }

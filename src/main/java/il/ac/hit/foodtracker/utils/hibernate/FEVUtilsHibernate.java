@@ -2,12 +2,24 @@ package il.ac.hit.foodtracker.utils.hibernate;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.PessimisticLockException;
+import javax.persistence.QueryTimeoutException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
+import org.hibernate.exception.GenericJDBCException;
+import org.hibernate.exception.JDBCConnectionException;
+import org.hibernate.exception.LockAcquisitionException;
+import org.hibernate.exception.SQLGrammarException;
+
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.DateUtils;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.ServerConstants;
 
 import java.text.MessageFormat;
@@ -27,7 +39,9 @@ public class FEVUtilsHibernate {
 	 * @param userId the user id
 	 * @throws Exception exception
 	 */
-	public static void addFoodEvent(FoodEatingEvent fev, Integer userId) throws Exception {
+	public static void addFoodEvent(FoodEatingEvent fev, Integer userId)
+			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
+			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
 
@@ -45,10 +59,10 @@ public class FEVUtilsHibernate {
 			session.save(fev);
 
 			session.getTransaction().commit();
+		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
+				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
 
-			System.out.println("updated");
-		} catch (Exception e) {
-			e.printStackTrace();
 			throw e;
 		} finally {
 			session.close();
@@ -94,7 +108,9 @@ public class FEVUtilsHibernate {
 	 * @param timeRange timerange (weekly,monthly)
 	 * @return List food eating events list
 	 */
-	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange) {
+	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange)
+			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
+			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
 		/// creating hibernate session
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class).buildSessionFactory();
@@ -129,8 +145,9 @@ public class FEVUtilsHibernate {
 				fev.setUser(null);
 			}
 			return fevList;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
+				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+			ErrorUtils.printPrettyError(e, "getAllEventForTimeRange");
 			throw e;
 		} finally {
 			session.close();

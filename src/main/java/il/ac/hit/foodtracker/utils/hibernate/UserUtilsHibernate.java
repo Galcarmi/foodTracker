@@ -1,15 +1,24 @@
 package il.ac.hit.foodtracker.utils.hibernate;
 
 import java.text.MessageFormat;
+import javax.persistence.PessimisticLockException;
+import javax.persistence.QueryTimeoutException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
+import org.hibernate.exception.GenericJDBCException;
+import org.hibernate.exception.JDBCConnectionException;
+import org.hibernate.exception.LockAcquisitionException;
+import org.hibernate.exception.SQLGrammarException;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
 
 /**
  * user utils hibernate class
+ * 
  * @author Carmi
  *
  */
@@ -17,11 +26,13 @@ public class UserUtilsHibernate {
 
 	/**
 	 * create user with hibernate
+	 * 
 	 * @param user the user details
 	 * @throws ConstraintViolationException constraintViolationException
-	 * @throws Exception exception
+	 * @throws Exception                    exception
 	 */
-	public static void createUser(User user) throws ConstraintViolationException, Exception {
+	public static void createUser(User user) throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
+	PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException  {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
 
@@ -35,8 +46,9 @@ public class UserUtilsHibernate {
 			session.getTransaction().commit();
 
 			System.out.println("saved");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
+				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+			ErrorUtils.printPrettyError(e, "createUser");
 			throw e;
 		} finally {
 			session.close();
@@ -46,11 +58,14 @@ public class UserUtilsHibernate {
 
 	/**
 	 * get user by id with hibernate
+	 * 
 	 * @param id user id
 	 * @return User user matching to the id
 	 * @throws Exception exception
 	 */
-	public static User getUserById(int id) throws Exception {
+	public static User getUserById(int id)
+			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
+			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
@@ -66,9 +81,10 @@ public class UserUtilsHibernate {
 			session.getTransaction().commit();
 
 			return userToReturn;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception(e.getMessage());
+		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
+				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+			ErrorUtils.printPrettyError(e, "getUserById");
+			throw e;
 		} finally {
 			session.close();
 			factory.close();
@@ -78,6 +94,7 @@ public class UserUtilsHibernate {
 
 	/**
 	 * get user by username with hibernate
+	 * 
 	 * @param username username
 	 * @return User user matching to the username
 	 * @throws Exception exception
@@ -99,9 +116,10 @@ public class UserUtilsHibernate {
 			User userToReturn = (User) session.createQuery(query).getSingleResult();
 			session.getTransaction().commit();
 			return userToReturn;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception(e.getMessage());
+		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
+				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+			ErrorUtils.printPrettyError(e, "getUserByUsername");
+			throw e;
 		} finally {
 			session.close();
 			factory.close();
