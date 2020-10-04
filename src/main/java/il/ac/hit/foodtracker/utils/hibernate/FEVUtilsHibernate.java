@@ -27,7 +27,7 @@ public class FEVUtilsHibernate {
 	 * 
 	 * @param fev    foodeatingevent too add
 	 * @param userId the user id
-	 * @throws Exception exception
+	 * @throws PersistenceException e
 	 */
 	public static void addFoodEvent(FoodEatingEvent fev, Integer userId)
 			throws PersistenceException {
@@ -62,6 +62,7 @@ public class FEVUtilsHibernate {
 	 * get food eating event by id with hibernate
 	 * 
 	 * @param fevId food eating event id
+	 * @throws PersistenceException e
 	 * @return FoodEatingEvent returns matching food eating event to the id
 	 */
 	public static FoodEatingEvent getFoodEventById(int fevId) throws PersistenceException {
@@ -95,6 +96,7 @@ public class FEVUtilsHibernate {
 	 * get all food eating event between timerange with hibernate
 	 * 
 	 * @param timeRange timerange (weekly,monthly)
+	 * @throws PersistenceException e
 	 * @return List food eating events list
 	 */
 	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange)

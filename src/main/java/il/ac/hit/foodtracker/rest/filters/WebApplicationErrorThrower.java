@@ -9,8 +9,9 @@ public class WebApplicationErrorThrower {
 	 * throw string error to the user
 	 * 
 	 * @param errorDescription errorDescription
+	 * @throws WebApplicationException e
 	 */
-	public static void throwError(String errorDescription) {
+	public static void throwError(String errorDescription) throws WebApplicationException {
 		ResponseBuilder builder = null;
 		builder = Response.status(Response.Status.UNAUTHORIZED).entity(errorDescription);
 		throw new WebApplicationException(builder.build());

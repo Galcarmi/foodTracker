@@ -1,8 +1,6 @@
 package il.ac.hit.foodtracker.utils;
 
 import java.util.Date;
-import org.hibernate.exception.ConstraintViolationException;
-
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotAuthorizedException;
 import il.ac.hit.foodtracker.model.User;
@@ -26,8 +24,8 @@ public class UserUtils {
 	 * @param password password
 	 * @return String jwt token
 	 * @throws MissingDataException 
-	 * @throws ConstraintViolationException constraintViolationException
-	 * @throws Exception                    exception
+	 * @throws PersistenceException e
+	 * @throws MissingDataException e
 	 */
 	public static String registerUser(String username, String password) throws MissingDataException, PersistenceException {
 
@@ -56,6 +54,7 @@ public class UserUtils {
 	 * verify the jwt token of the user
 	 * 
 	 * @param jwt jwt token
+	 * @throws PersistenceException e
 	 * @return CurrentUser current logged in user
 	 */
 	public static CurrentUser verifyUserLoggedIn(String jwt) throws PersistenceException {
@@ -81,7 +80,8 @@ public class UserUtils {
 	 * 
 	 * @param user the user details
 	 * @return String jwt token
-	 * @throws Exception exception
+	 * @throws NotAuthorizedException e
+	 * @throws PersistenceException e
 	 */
 	public static String verifyUserLogin(User user) throws NotAuthorizedException, PersistenceException {
 

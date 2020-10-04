@@ -7,6 +7,11 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * Cors filter class -> allows cross origin from every address
+ * @author Carmi
+ *
+ */
 @Provider
 @PreMatching
 public class CORSFilter implements ContainerResponseFilter {

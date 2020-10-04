@@ -1,7 +1,6 @@
 package il.ac.hit.foodtracker.rest;
 
 import java.util.List;
-
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -17,8 +16,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
