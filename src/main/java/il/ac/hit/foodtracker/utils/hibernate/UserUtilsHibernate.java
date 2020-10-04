@@ -1,17 +1,11 @@
 package il.ac.hit.foodtracker.utils.hibernate;
 
 import java.text.MessageFormat;
-import javax.persistence.PessimisticLockException;
-import javax.persistence.QueryTimeoutException;
+import javax.persistence.PersistenceException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.DataException;
-import org.hibernate.exception.GenericJDBCException;
-import org.hibernate.exception.JDBCConnectionException;
-import org.hibernate.exception.LockAcquisitionException;
-import org.hibernate.exception.SQLGrammarException;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
@@ -31,8 +25,7 @@ public class UserUtilsHibernate {
 	 * @throws ConstraintViolationException constraintViolationException
 	 * @throws Exception                    exception
 	 */
-	public static void createUser(User user) throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
-	PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException  {
+	public static void createUser(User user) throws PersistenceException {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
 
@@ -46,8 +39,7 @@ public class UserUtilsHibernate {
 			session.getTransaction().commit();
 
 			System.out.println("saved");
-		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
-				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+		} catch (PersistenceException e) {
 			ErrorUtils.printPrettyError(e, "createUser");
 			throw e;
 		} finally {
@@ -63,9 +55,7 @@ public class UserUtilsHibernate {
 	 * @return User user matching to the id
 	 * @throws Exception exception
 	 */
-	public static User getUserById(int id)
-			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
-			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
+	public static User getUserById(int id) throws PersistenceException {
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
@@ -81,9 +71,9 @@ public class UserUtilsHibernate {
 			session.getTransaction().commit();
 
 			return userToReturn;
-		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
-				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+		} catch (PersistenceException e) {
 			ErrorUtils.printPrettyError(e, "getUserById");
+
 			throw e;
 		} finally {
 			session.close();
@@ -99,7 +89,7 @@ public class UserUtilsHibernate {
 	 * @return User user matching to the username
 	 * @throws Exception exception
 	 */
-	public static User getUserByUsername(String username) throws Exception {
+	public static User getUserByUsername(String username) throws PersistenceException {
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
@@ -116,9 +106,9 @@ public class UserUtilsHibernate {
 			User userToReturn = (User) session.createQuery(query).getSingleResult();
 			session.getTransaction().commit();
 			return userToReturn;
-		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
-				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+		} catch (PersistenceException e) {
 			ErrorUtils.printPrettyError(e, "getUserByUsername");
+			
 			throw e;
 		} finally {
 			session.close();

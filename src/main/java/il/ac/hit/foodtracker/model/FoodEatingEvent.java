@@ -1,7 +1,6 @@
 package il.ac.hit.foodtracker.model;
 
 import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
+import il.ac.hit.foodtracker.exceptions.MissingDataException;
 
 /**
  * FoodEatingEvent hibernate class - annotated class for hibernate - represents
@@ -139,11 +137,11 @@ public class FoodEatingEvent {
 	/**
 	 * validates if all the required fields are exist
 	 * 
-	 * @throws AuthVerifyException authVerifyException
+	 * @throws MissingDataException missingDataException
 	 */
-	public void validateAllRequiredFields() throws AuthVerifyException {
+	public void validateAllRequiredFields() throws MissingDataException {
 		if (this.calory == null || this.name == null || this.category == null) {
-			throw new AuthVerifyException("please enter full food eating event data (name,category,calory)");
+			throw new MissingDataException("please enter full food eating event data (name,category,calory)");
 		}
 	}
 

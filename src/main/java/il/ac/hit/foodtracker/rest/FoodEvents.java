@@ -1,6 +1,8 @@
 package il.ac.hit.foodtracker.rest;
 
 import java.util.List;
+
+import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -17,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
+import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
@@ -46,11 +49,28 @@ public class FoodEvents {
 	@Path("/")
 	public Response viewFoodEvents(@Context ContainerRequestContext crc,
 			@DefaultValue(ServerConstants.TimeRangeConstants.WEEKLY) @QueryParam("timerange") String timeRange) {
-		List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
-		GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
-		};
+		Status status;
+		Object message;
+		try {
+			List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
+			GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
+			};
+			status = Status.OK;
+			message = entity;
 
-		return Response.status(Status.OK).entity(entity).build();
+		} catch (PersistenceException e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = "server error";
+		}
+		catch (Exception e) {
+			ErrorUtils.printPrettyError(e, "viewFoodEvent");
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = "server error";
+		}
+
+		return Response.status(status).entity(message).build();
+
 	}
 
 	/**
@@ -70,6 +90,10 @@ public class FoodEvents {
 			FoodEatingEvent fev = FEVUtils.getFoodEventById(foodEventId);
 			status = Status.OK;
 			message = fev.getFoodEatingEventResponse();
+		} catch (PersistenceException e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = "server error";
 		} catch (Exception e) {
 			ErrorUtils.printPrettyError(e, "viewFoodEvent");
 			status = Status.INTERNAL_SERVER_ERROR;
@@ -99,14 +123,18 @@ public class FoodEvents {
 			FEVUtils.addFoodEatingEvent(fev, currentUser);
 			status = Status.OK;
 			message = "food event added";
-		} catch (AuthVerifyException e) {
+		} catch (MissingDataException e) {
 			ErrorUtils.printPrettyError(e, "addFoodEvent");
 			status = Status.BAD_REQUEST;
 			message = e.getMessage();
+		} catch (PersistenceException e) {
+			ErrorUtils.printPrettyError(e, "addFoodEvent");
+			status = Status.INTERNAL_SERVER_ERROR;
+			message = "server error";
 		} catch (Exception e) {
 			ErrorUtils.printPrettyError(e, "addFoodEvent");
 			status = Status.INTERNAL_SERVER_ERROR;
-			message = e.getMessage();
+			message = "server error";
 		}
 
 		return Response.status(status).entity(message).build();

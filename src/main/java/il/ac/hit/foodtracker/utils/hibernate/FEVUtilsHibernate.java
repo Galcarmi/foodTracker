@@ -2,20 +2,10 @@ package il.ac.hit.foodtracker.utils.hibernate;
 
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.PessimisticLockException;
-import javax.persistence.QueryTimeoutException;
-
+import javax.persistence.PersistenceException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.DataException;
-import org.hibernate.exception.GenericJDBCException;
-import org.hibernate.exception.JDBCConnectionException;
-import org.hibernate.exception.LockAcquisitionException;
-import org.hibernate.exception.SQLGrammarException;
-
 import il.ac.hit.foodtracker.model.FoodEatingEvent;
 import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.DateUtils;
@@ -40,8 +30,7 @@ public class FEVUtilsHibernate {
 	 * @throws Exception exception
 	 */
 	public static void addFoodEvent(FoodEatingEvent fev, Integer userId)
-			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
-			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
+			throws PersistenceException {
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
 				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
 
@@ -59,8 +48,7 @@ public class FEVUtilsHibernate {
 			session.save(fev);
 
 			session.getTransaction().commit();
-		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
-				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+		} catch (PersistenceException e) {
 			ErrorUtils.printPrettyError(e, "addFoodEvent");
 
 			throw e;
@@ -76,7 +64,7 @@ public class FEVUtilsHibernate {
 	 * @param fevId food eating event id
 	 * @return FoodEatingEvent returns matching food eating event to the id
 	 */
-	public static FoodEatingEvent getFoodEventById(int fevId) {
+	public static FoodEatingEvent getFoodEventById(int fevId) throws PersistenceException {
 		/// creating hibernate session
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
@@ -93,8 +81,9 @@ public class FEVUtilsHibernate {
 			session.getTransaction().commit();
 
 			return fev;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
+			ErrorUtils.printPrettyError(e, "getFoodEventById");
+
 			throw e;
 		} finally {
 			session.close();
@@ -109,8 +98,7 @@ public class FEVUtilsHibernate {
 	 * @return List food eating events list
 	 */
 	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange)
-			throws ConstraintViolationException, DataException, JDBCConnectionException, LockAcquisitionException,
-			PessimisticLockException, QueryTimeoutException, SQLGrammarException, GenericJDBCException {
+			throws PersistenceException {
 		/// creating hibernate session
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
 				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class).buildSessionFactory();
@@ -145,8 +133,7 @@ public class FEVUtilsHibernate {
 				fev.setUser(null);
 			}
 			return fevList;
-		} catch (ConstraintViolationException | DataException | JDBCConnectionException | LockAcquisitionException
-				| PessimisticLockException | QueryTimeoutException | SQLGrammarException | GenericJDBCException e) {
+		} catch (PersistenceException e) {
 			ErrorUtils.printPrettyError(e, "getAllEventForTimeRange");
 			throw e;
 		} finally {

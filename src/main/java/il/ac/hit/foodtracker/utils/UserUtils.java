@@ -2,8 +2,11 @@ package il.ac.hit.foodtracker.utils;
 
 import java.util.Date;
 import org.hibernate.exception.ConstraintViolationException;
+
+import javax.persistence.PersistenceException;
 import javax.ws.rs.NotAuthorizedException;
 import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
@@ -22,15 +25,16 @@ public class UserUtils {
 	 * @param username username
 	 * @param password password
 	 * @return String jwt token
+	 * @throws MissingDataException 
 	 * @throws ConstraintViolationException constraintViolationException
 	 * @throws Exception                    exception
 	 */
-	public static String registerUser(String username, String password) throws ConstraintViolationException, Exception {
+	public static String registerUser(String username, String password) throws MissingDataException, PersistenceException {
 
 		try {
 			/// validation checks on the username and password
 			if (username == null || password == null) {
-				throw new Exception("username or password can't be null");
+				throw new MissingDataException("username or password can't be null");
 			}
 
 			Date registrationDate = new Date();
@@ -42,7 +46,7 @@ public class UserUtils {
 			String token = JwtUtils.createJWT(username, userId);
 
 			return token;
-		} catch (Exception e) {
+		} catch (PersistenceException e) {
 			throw e;
 		}
 
@@ -54,7 +58,7 @@ public class UserUtils {
 	 * @param jwt jwt token
 	 * @return CurrentUser current logged in user
 	 */
-	public static CurrentUser verifyUserLoggedIn(String jwt) {
+	public static CurrentUser verifyUserLoggedIn(String jwt) throws PersistenceException {
 		/// get user details from jwt
 		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
 
@@ -79,7 +83,7 @@ public class UserUtils {
 	 * @return String jwt token
 	 * @throws Exception exception
 	 */
-	public static String verifyUserLogin(User user) throws NotAuthorizedException, Exception {
+	public static String verifyUserLogin(User user) throws NotAuthorizedException, PersistenceException {
 
 		User userFromDB = UserUtilsHibernate.getUserByUsername(user.getUsername());
 		if (!user.getPassword().equals(userFromDB.getPassword())) {
