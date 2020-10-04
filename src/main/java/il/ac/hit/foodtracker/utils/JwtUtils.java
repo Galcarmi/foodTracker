@@ -65,7 +65,7 @@ public class JwtUtils {
 			return currentUser;
 		} catch (ExpiredJwtException | SignatureException | MalformedJwtException | IllegalArgumentException e) {
 			ErrorUtils.printPrettyError(e, "getJwtDetails");
-			WebApplicationErrorThrower.throwError(e.getMessage());
+			WebApplicationErrorThrower.throwError("unauthenticated!");
 			return null;
 		}
 	}
