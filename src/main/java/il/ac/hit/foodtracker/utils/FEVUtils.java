@@ -1,7 +1,6 @@
 package il.ac.hit.foodtracker.utils;
 
 import java.util.List;
-
 import javax.persistence.PersistenceException;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;

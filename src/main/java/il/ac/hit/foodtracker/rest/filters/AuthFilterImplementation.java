@@ -30,12 +30,16 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext crc) throws IOException {
 		try {
+			//get authorization headers
 			String authHeader = crc.getHeaderString(HttpHeaders.AUTHORIZATION);
 			if (authHeader == null) {
 				WebApplicationErrorThrower.throwError("Bearer missing");
 			}
 
+			//get jwt token from authorization header
 			String token = parseToken(authHeader);
+			
+			//verifies the jwt token and returns currentUser state
 			CurrentUser verifyResult = verifyToken(token);
 			if (!verifyResult.isVerified()) {
 				WebApplicationErrorThrower.throwError("Bearer error=\"invalid_token\"");

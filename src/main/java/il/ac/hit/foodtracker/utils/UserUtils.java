@@ -31,15 +31,16 @@ public class UserUtils {
 
 		try {
 			/// validation checks on the username and password
-			if (username == null || password == null) {
-				throw new MissingDataException("username or password can't be null");
+			if (username == null || password == null || username.length()<6 || password.length()<6) {
+				throw new MissingDataException("username or password can't be empty and need to be at least 6 characters");
 			}
 
+			///create new user with the username and password
 			Date registrationDate = new Date();
-
 			User user = new User(username, password, registrationDate);
 			UserUtilsHibernate.createUser(user);
 
+			///create new token for the registered user
 			Integer userId = user.getId();
 			String token = JwtUtils.createJWT(username, userId);
 
@@ -85,11 +86,15 @@ public class UserUtils {
 	 */
 	public static String verifyUserLogin(User user) throws NotAuthorizedException, PersistenceException {
 
+		//get username from db
 		User userFromDB = UserUtilsHibernate.getUserByUsername(user.getUsername());
+		
+		//checks if the username and password are matching to the user in the db
 		if (!user.getPassword().equals(userFromDB.getPassword())) {
 			throw new NotAuthorizedException("not authorized");
 		}
 
+		//creates jwt if we have a match
 		String token = JwtUtils.createJWT(userFromDB.getUsername(), userFromDB.getId());
 
 		return token;

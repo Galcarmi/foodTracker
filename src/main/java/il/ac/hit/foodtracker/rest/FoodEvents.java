@@ -50,6 +50,7 @@ public class FoodEvents {
 		Object message;
 		try {
 			List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
+			///food events list doesn't have descriptor so we need to wrap it with generic entity object
 			GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
 			};
 			status = Status.OK;
@@ -113,6 +114,7 @@ public class FoodEvents {
 	@AuthFilter
 	@Path("/new")
 	public Response addFoodEvent(FoodEatingEvent fev, @Context ContainerRequestContext crc) {
+		//gets the current user from the auth filter
 		CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
 		Status status;
 		Object message;

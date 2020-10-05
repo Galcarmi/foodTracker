@@ -33,6 +33,7 @@ public class Login {
 		Object message;
 		
 		try {
+			//verifies that the user has a jwt token and checks if its valid -> if it is, returns a token
 			String token = UserUtils.verifyUserLogin(user);
 			message = token;
 			status = Status.OK;
