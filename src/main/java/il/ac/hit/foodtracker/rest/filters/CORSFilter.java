@@ -8,7 +8,7 @@ import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
 /**
- * Cors filter class -> allows cross origin from every address
+ * Cors filter class - allows cross origin from every address
  * @author Carmi
  *
  */

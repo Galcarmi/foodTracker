@@ -6,8 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
-import il.ac.hit.foodtracker.model.FoodEventDAO;
-import il.ac.hit.foodtracker.model.UserDAO;
+import il.ac.hit.foodtracker.model.FoodEvent;
+import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
 
 /**
@@ -21,14 +21,14 @@ public class UserUtilsHibernate {
 	/**
 	 * create user with hibernate
 	 * 
-	 * @param userDAO the user details
+	 * @param user the user details
 	 * @throws ConstraintViolationException constraintViolationException
-	 * @throws Exception                    exception
+	 * @throws PersistenceException         e
 	 */
-	public static void createUser(UserDAO userDAO) throws PersistenceException {
+	public static void createUser(User user) throws PersistenceException {
 		//creates new factory and hibernate session
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(UserDAO.class)
-				.addAnnotatedClass(FoodEventDAO.class).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
+				.addAnnotatedClass(FoodEvent.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 		try {
@@ -36,7 +36,7 @@ public class UserUtilsHibernate {
 			session.beginTransaction();
 
 			//save the user to the db
-			session.save(userDAO);
+			session.save(user);
 
 			//commit our changes
 			session.getTransaction().commit();
@@ -55,12 +55,12 @@ public class UserUtilsHibernate {
 	 * 
 	 * @param id user id
 	 * @return User user matching to the id
-	 * @throws Exception exception
+	 * @throws PersistenceException e
 	 */
-	public static UserDAO getUserById(int id) throws PersistenceException {
+	public static User getUserById(int id) throws PersistenceException {
 		//creates new factory and hibernate session
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(UserDAO.class)
-				.addAnnotatedClass(FoodEventDAO.class).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
+				.addAnnotatedClass(FoodEvent.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 
@@ -69,7 +69,7 @@ public class UserUtilsHibernate {
 			session.beginTransaction();
 
 			//get the user with a spesific id
-			UserDAO userToReturn = session.get(UserDAO.class, id);
+			User userToReturn = session.get(User.class, id);
 
 			session.getTransaction().commit();
 
@@ -90,12 +90,12 @@ public class UserUtilsHibernate {
 	 * 
 	 * @param username username
 	 * @return User user matching to the username
-	 * @throws Exception exception
+	 * @throws PersistenceException e
 	 */
-	public static UserDAO getUserByUsername(String username) throws PersistenceException {
+	public static User getUserByUsername(String username) throws PersistenceException {
 		//creates new factory and hibernate session
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(UserDAO.class)
-				.addAnnotatedClass(FoodEventDAO.class).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
+				.addAnnotatedClass(FoodEvent.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 
@@ -108,7 +108,7 @@ public class UserUtilsHibernate {
 			String query = MessageFormat.format("from User as user where user.username = ''{0}''", params);
 
 			//execute query
-			UserDAO userToReturn = (UserDAO) session.createQuery(query).getSingleResult();
+			User userToReturn = (User) session.createQuery(query).getSingleResult();
 			session.getTransaction().commit();
 			
 			return userToReturn;

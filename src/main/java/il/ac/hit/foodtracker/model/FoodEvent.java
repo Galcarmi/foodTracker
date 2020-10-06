@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 
 /**
- * FoodEatingEvent hibernate class - annotated class for hibernate - represents
+ * FoodEvent hibernate class - annotated class for hibernate - represents
  * sql table
  * 
  * @author Carmi
@@ -21,7 +21,7 @@ import il.ac.hit.foodtracker.exceptions.MissingDataException;
  */
 @Entity
 @Table(name = "food_eating_event")
-public class FoodEventDAO {
+public class FoodEvent {
 
 	@Id
 	@Column(name = "id")
@@ -36,7 +36,7 @@ public class FoodEventDAO {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
-	private UserDAO userDAO;
+	private User user;
 
 	@Column(name = "calory")
 	private Integer calory;
@@ -47,11 +47,11 @@ public class FoodEventDAO {
 	@Column(name = "update_date")
 	private Date update_date;
 
-	public FoodEventDAO() {
+	public FoodEvent() {
 		super();
 	}
 
-	public FoodEventDAO(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,
+	public FoodEvent(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,
 			String i_Category) {
 		super();
 		setName(i_Name);
@@ -77,12 +77,12 @@ public class FoodEventDAO {
 		this.name = name;
 	}
 
-	public UserDAO getUser() {
-		return userDAO;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser(UserDAO userDAO) {
-		this.userDAO = userDAO;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Integer getCalory() {
@@ -119,7 +119,7 @@ public class FoodEventDAO {
 
 	@Override
 	public String toString() {
-		return "FoodEatingEvent [id=" + id + ", name=" + name + ", category=" + category + ", user=" + userDAO
+		return "FoodEatingEvent [id=" + id + ", name=" + name + ", category=" + category + ", user=" + user
 				+ ", calory=" + calory + ", created_date=" + created_date + ", update_date=" + update_date + "]";
 	}
 
@@ -128,8 +128,8 @@ public class FoodEventDAO {
 	 * 
 	 * @return FoodEatingEvent foodEatingEvent
 	 */
-	public FoodEventDAO getFoodEatingEventResponse() {
-		FoodEventDAO fevToReturn = new FoodEventDAO(name, calory, created_date, update_date, category);
+	public FoodEvent getFoodEatingEventResponse() {
+		FoodEvent fevToReturn = new FoodEvent(name, calory, created_date, update_date, category);
 		fevToReturn.setId(id);
 		return fevToReturn;
 	}

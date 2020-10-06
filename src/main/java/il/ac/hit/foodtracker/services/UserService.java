@@ -3,14 +3,14 @@ package il.ac.hit.foodtracker.services;
 import java.util.Date;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotAuthorizedException;
-import il.ac.hit.foodtracker.model.UserDAO;
+import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
 
 
 /**
- * user utils class
+ * UserService class
  * 
  * @author Carmi
  *
@@ -23,7 +23,7 @@ public class UserService {
 	 * @param username username
 	 * @param password password
 	 * @return String jwt token
-	 * @throws MissingDataException 
+	 * @throws MissingDataException e
 	 * @throws PersistenceException e
 	 * @throws MissingDataException e
 	 */
@@ -37,11 +37,11 @@ public class UserService {
 
 			///create new user with the username and password
 			Date registrationDate = new Date();
-			UserDAO userDAO = new UserDAO(username, password, registrationDate);
-			UserUtilsHibernate.createUser(userDAO);
+			User user = new User(username, password, registrationDate);
+			UserUtilsHibernate.createUser(user);
 
 			///create new token for the registered user
-			Integer userId = userDAO.getId();
+			Integer userId = user.getId();
 			String token = JwtService.createJWT(username, userId);
 
 			return token;
@@ -65,7 +65,7 @@ public class UserService {
 		/// get user details
 		Integer userId = currentUser.getId();
 		String username = currentUser.getUsername();
-		UserDAO userFromJwt = UserUtilsHibernate.getUserById(userId);
+		User userFromJwt = UserUtilsHibernate.getUserById(userId);
 		
 		/// check if the user from jwt is equals to the user from the userid
 		if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
@@ -79,18 +79,18 @@ public class UserService {
 	/**
 	 * verifies the username and the password of a user in the DB
 	 * 
-	 * @param userDAO the user details
+	 * @param user the user details
 	 * @return String jwt token
 	 * @throws NotAuthorizedException e
 	 * @throws PersistenceException e
 	 */
-	public static String verifyUserLogin(UserDAO userDAO) throws NotAuthorizedException, PersistenceException {
+	public static String verifyUserLogin(User user) throws NotAuthorizedException, PersistenceException {
 
 		//get username from db
-		UserDAO userFromDB = UserUtilsHibernate.getUserByUsername(userDAO.getUsername());
+		User userFromDB = UserUtilsHibernate.getUserByUsername(user.getUsername());
 		
 		//checks if the username and password are matching to the user in the db
-		if (!userDAO.getPassword().equals(userFromDB.getPassword())) {
+		if (!user.getPassword().equals(userFromDB.getPassword())) {
 			throw new NotAuthorizedException("not authorized");
 		}
 

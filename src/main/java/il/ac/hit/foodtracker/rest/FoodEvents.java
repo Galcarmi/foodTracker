@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
-import il.ac.hit.foodtracker.model.FoodEventDAO;
+import il.ac.hit.foodtracker.model.FoodEvent;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
 import il.ac.hit.foodtracker.services.FEVService;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
@@ -50,9 +50,9 @@ public class FoodEvents {
 		Object message;
 		try {
 			CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
-			List<FoodEventDAO> fevList = FEVService.getEventsByTimeRange(timeRange, currentUser.getId());
+			List<FoodEvent> fevList = FEVService.getEventsByTimeRange(timeRange, currentUser.getId());
 			///food events list doesn't have descriptor so we need to wrap it with generic entity object
-			GenericEntity<List<FoodEventDAO>> entity = new GenericEntity<List<FoodEventDAO>>(fevList) {
+			GenericEntity<List<FoodEvent>> entity = new GenericEntity<List<FoodEvent>>(fevList) {
 			};
 			status = Status.OK;
 			message = entity;
@@ -86,7 +86,7 @@ public class FoodEvents {
 		Status status;
 		Object message;
 		try {
-			FoodEventDAO fev = FEVService.getFoodEventById(foodEventId);
+			FoodEvent fev = FEVService.getFoodEventById(foodEventId);
 			status = Status.OK;
 			message = fev.getFoodEatingEventResponse();
 		} catch (PersistenceException e) {
@@ -114,7 +114,7 @@ public class FoodEvents {
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/new")
-	public Response addFoodEvent(FoodEventDAO fev, @Context ContainerRequestContext crc) {
+	public Response addFoodEvent(FoodEvent fev, @Context ContainerRequestContext crc) {
 		//gets the current user from the auth filter
 		CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
 		Status status;

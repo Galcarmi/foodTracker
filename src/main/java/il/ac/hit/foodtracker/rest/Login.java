@@ -7,7 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import il.ac.hit.foodtracker.model.UserDAO;
+import il.ac.hit.foodtracker.model.User;
 import il.ac.hit.foodtracker.services.UserService;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
 
@@ -22,19 +22,19 @@ public class Login {
 
 	/**
 	 * api path for login 
-	 * @param userDAO User (checks only the username and password)
+	 * @param user User (checks only the username and password)
 	 * @return Response jwt token
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(UserDAO userDAO) {
+	public Response login(User user) {
 		Status status;
 		Object message;
 
 		try {
 			//verifies that the user has a jwt token and checks if its valid -> if it is, returns a token
-			String token = UserService.verifyUserLogin(userDAO);
+			String token = UserService.verifyUserLogin(user);
 			message = token;
 			status = Status.OK;
 		} catch (Exception e) {

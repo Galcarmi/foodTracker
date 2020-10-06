@@ -1,1 +1,7 @@
+il.ac.hit.foodtracker.exceptions
+il.ac.hit.foodtracker.model
 il.ac.hit.foodtracker.rest
+il.ac.hit.foodtracker.rest.filters
+il.ac.hit.foodtracker.services
+il.ac.hit.foodtracker.utils
+il.ac.hit.foodtracker.utils.hibernate

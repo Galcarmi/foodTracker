@@ -14,6 +14,11 @@ import il.ac.hit.foodtracker.utils.DateUtils;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.ServerConstants;
 
+/**
+ * JwtService class
+ * @author Carmi
+ *
+ */
 @SuppressWarnings("deprecation")
 public class JwtService {
 
