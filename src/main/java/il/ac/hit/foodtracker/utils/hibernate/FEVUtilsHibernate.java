@@ -6,8 +6,8 @@ import javax.persistence.PersistenceException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import il.ac.hit.foodtracker.model.FoodEatingEvent;
-import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.model.FoodEventDAO;
+import il.ac.hit.foodtracker.model.UserDAO;
 import il.ac.hit.foodtracker.utils.DateUtils;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
 import il.ac.hit.foodtracker.utils.ServerConstants;
@@ -29,17 +29,16 @@ public class FEVUtilsHibernate {
 	 * @param userId the user id
 	 * @throws PersistenceException e
 	 */
-	public static void addFoodEvent(FoodEatingEvent fev, Integer userId)
-			throws PersistenceException {
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class)
-				.addAnnotatedClass(FoodEatingEvent.class).buildSessionFactory();
+	public static void addFoodEvent(FoodEventDAO fev, Integer userId) throws PersistenceException {
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(UserDAO.class)
+				.addAnnotatedClass(FoodEventDAO.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 		try {
 
 			session.beginTransaction();
 
-			User userToUpdate = session.get(User.class, userId);
+			UserDAO userToUpdate = session.get(UserDAO.class, userId);
 			System.out.println(userToUpdate);
 			Date now = new Date();
 			fev.setCreated_date(now);
@@ -65,11 +64,11 @@ public class FEVUtilsHibernate {
 	 * @throws PersistenceException e
 	 * @return FoodEatingEvent returns matching food eating event to the id
 	 */
-	public static FoodEatingEvent getFoodEventById(int fevId) throws PersistenceException {
+	public static FoodEventDAO getFoodEventById(int fevId) throws PersistenceException {
 		/// creating hibernate session
 
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
-				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class).buildSessionFactory();
+				.addAnnotatedClass(FoodEventDAO.class).addAnnotatedClass(UserDAO.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 		try {
@@ -77,7 +76,7 @@ public class FEVUtilsHibernate {
 			// get food event by id
 			session.beginTransaction();
 
-			FoodEatingEvent fev = session.get(FoodEatingEvent.class, fevId);
+			FoodEventDAO fev = session.get(FoodEventDAO.class, fevId);
 
 			session.getTransaction().commit();
 
@@ -99,11 +98,11 @@ public class FEVUtilsHibernate {
 	 * @throws PersistenceException e
 	 * @return List food eating events list
 	 */
-	public static List<FoodEatingEvent> getAllEventForTimeRange(String timeRange)
+	public static List<FoodEventDAO> getAllEventForTimeRange(String timeRange, int userId)
 			throws PersistenceException {
 		/// creating hibernate session
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
-				.addAnnotatedClass(FoodEatingEvent.class).addAnnotatedClass(User.class).buildSessionFactory();
+				.addAnnotatedClass(FoodEventDAO.class).addAnnotatedClass(UserDAO.class).buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 		try {
@@ -122,16 +121,17 @@ public class FEVUtilsHibernate {
 			}
 
 			/// create hibernate HQL query
-			Object[] params = new Object[] { dtToCheckStart, dtToCheckEnd };
-			String query = MessageFormat
-					.format("from FoodEatingEvent as fev where fev.created_date between ''{0}'' and ''{1}''", params);
+			Object[] params = new Object[] { dtToCheckStart, dtToCheckEnd, userId };
+			String query = MessageFormat.format(
+					"from FoodEatingEvent as fev where fev.created_date between ''{0}'' and ''{1}'' and fev.user.id = {2} ",
+					params);
 
 			@SuppressWarnings("unchecked")
-			List<FoodEatingEvent> fevList = session.createQuery(query).getResultList();
+			List<FoodEventDAO> fevList = session.createQuery(query).getResultList();
 
 			session.getTransaction().commit();
 
-			for (FoodEatingEvent fev : fevList) {
+			for (FoodEventDAO fev : fevList) {
 				fev.setUser(null);
 			}
 			return fevList;

@@ -18,10 +18,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
-import il.ac.hit.foodtracker.model.FoodEatingEvent;
+import il.ac.hit.foodtracker.model.FoodEventDAO;
 import il.ac.hit.foodtracker.rest.filters.AuthFilter;
+import il.ac.hit.foodtracker.services.FEVService;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
-import il.ac.hit.foodtracker.utils.FEVUtils;
 import il.ac.hit.foodtracker.utils.ServerConstants;
 
 /**
@@ -49,9 +49,10 @@ public class FoodEvents {
 		Status status;
 		Object message;
 		try {
-			List<FoodEatingEvent> fevList = FEVUtils.getEventsByTimeRange(timeRange);
+			CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
+			List<FoodEventDAO> fevList = FEVService.getEventsByTimeRange(timeRange, currentUser.getId());
 			///food events list doesn't have descriptor so we need to wrap it with generic entity object
-			GenericEntity<List<FoodEatingEvent>> entity = new GenericEntity<List<FoodEatingEvent>>(fevList) {
+			GenericEntity<List<FoodEventDAO>> entity = new GenericEntity<List<FoodEventDAO>>(fevList) {
 			};
 			status = Status.OK;
 			message = entity;
@@ -85,7 +86,7 @@ public class FoodEvents {
 		Status status;
 		Object message;
 		try {
-			FoodEatingEvent fev = FEVUtils.getFoodEventById(foodEventId);
+			FoodEventDAO fev = FEVService.getFoodEventById(foodEventId);
 			status = Status.OK;
 			message = fev.getFoodEatingEventResponse();
 		} catch (PersistenceException e) {
@@ -113,13 +114,13 @@ public class FoodEvents {
 	@Produces(MediaType.APPLICATION_JSON)
 	@AuthFilter
 	@Path("/new")
-	public Response addFoodEvent(FoodEatingEvent fev, @Context ContainerRequestContext crc) {
+	public Response addFoodEvent(FoodEventDAO fev, @Context ContainerRequestContext crc) {
 		//gets the current user from the auth filter
 		CurrentUser currentUser = (CurrentUser) crc.getProperty("verifyResult");
 		Status status;
 		Object message;
 		try {
-			FEVUtils.addFoodEatingEvent(fev, currentUser);
+			FEVService.addFoodEatingEvent(fev, currentUser);
 			status = Status.OK;
 			message = "food event added";
 		} catch (MissingDataException e) {

@@ -1,9 +1,9 @@
-package il.ac.hit.foodtracker.utils;
+package il.ac.hit.foodtracker.services;
 
 import java.util.Date;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotAuthorizedException;
-import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.model.UserDAO;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
@@ -15,7 +15,7 @@ import il.ac.hit.foodtracker.utils.hibernate.UserUtilsHibernate;
  * @author Carmi
  *
  */
-public class UserUtils {
+public class UserService {
 
 	/**
 	 * register a user
@@ -37,12 +37,12 @@ public class UserUtils {
 
 			///create new user with the username and password
 			Date registrationDate = new Date();
-			User user = new User(username, password, registrationDate);
-			UserUtilsHibernate.createUser(user);
+			UserDAO userDAO = new UserDAO(username, password, registrationDate);
+			UserUtilsHibernate.createUser(userDAO);
 
 			///create new token for the registered user
-			Integer userId = user.getId();
-			String token = JwtUtils.createJWT(username, userId);
+			Integer userId = userDAO.getId();
+			String token = JwtService.createJWT(username, userId);
 
 			return token;
 		} catch (PersistenceException e) {
@@ -60,13 +60,13 @@ public class UserUtils {
 	 */
 	public static CurrentUser verifyUserLoggedIn(String jwt) throws PersistenceException {
 		/// get user details from jwt
-		CurrentUser currentUser = JwtUtils.getJwtDetails(jwt);
+		CurrentUser currentUser = JwtService.getJwtDetails(jwt);
 
 		/// get user details
 		Integer userId = currentUser.getId();
 		String username = currentUser.getUsername();
-		User userFromJwt = UserUtilsHibernate.getUserById(userId);
-
+		UserDAO userFromJwt = UserUtilsHibernate.getUserById(userId);
+		
 		/// check if the user from jwt is equals to the user from the userid
 		if (userFromJwt.getId() == userId && userFromJwt.getUsername().equals(username)) {
 			currentUser.setVerified(true);
@@ -79,23 +79,23 @@ public class UserUtils {
 	/**
 	 * verifies the username and the password of a user in the DB
 	 * 
-	 * @param user the user details
+	 * @param userDAO the user details
 	 * @return String jwt token
 	 * @throws NotAuthorizedException e
 	 * @throws PersistenceException e
 	 */
-	public static String verifyUserLogin(User user) throws NotAuthorizedException, PersistenceException {
+	public static String verifyUserLogin(UserDAO userDAO) throws NotAuthorizedException, PersistenceException {
 
 		//get username from db
-		User userFromDB = UserUtilsHibernate.getUserByUsername(user.getUsername());
+		UserDAO userFromDB = UserUtilsHibernate.getUserByUsername(userDAO.getUsername());
 		
 		//checks if the username and password are matching to the user in the db
-		if (!user.getPassword().equals(userFromDB.getPassword())) {
+		if (!userDAO.getPassword().equals(userFromDB.getPassword())) {
 			throw new NotAuthorizedException("not authorized");
 		}
 
 		//creates jwt if we have a match
-		String token = JwtUtils.createJWT(userFromDB.getUsername(), userFromDB.getId());
+		String token = JwtService.createJWT(userFromDB.getUsername(), userFromDB.getId());
 
 		return token;
 	}

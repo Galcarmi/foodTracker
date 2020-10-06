@@ -21,7 +21,7 @@ import il.ac.hit.foodtracker.exceptions.MissingDataException;
  */
 @Entity
 @Table(name = "food_eating_event")
-public class FoodEatingEvent {
+public class FoodEventDAO {
 
 	@Id
 	@Column(name = "id")
@@ -36,7 +36,7 @@ public class FoodEatingEvent {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
-	private User user;
+	private UserDAO userDAO;
 
 	@Column(name = "calory")
 	private Integer calory;
@@ -47,11 +47,11 @@ public class FoodEatingEvent {
 	@Column(name = "update_date")
 	private Date update_date;
 
-	public FoodEatingEvent() {
+	public FoodEventDAO() {
 		super();
 	}
 
-	public FoodEatingEvent(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,
+	public FoodEventDAO(String i_Name, Integer i_Calory, Date i_Created_date, Date i_Update_date,
 			String i_Category) {
 		super();
 		setName(i_Name);
@@ -77,12 +77,12 @@ public class FoodEatingEvent {
 		this.name = name;
 	}
 
-	public User getUser() {
-		return user;
+	public UserDAO getUser() {
+		return userDAO;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(UserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public Integer getCalory() {
@@ -119,7 +119,7 @@ public class FoodEatingEvent {
 
 	@Override
 	public String toString() {
-		return "FoodEatingEvent [id=" + id + ", name=" + name + ", category=" + category + ", user=" + user
+		return "FoodEatingEvent [id=" + id + ", name=" + name + ", category=" + category + ", user=" + userDAO
 				+ ", calory=" + calory + ", created_date=" + created_date + ", update_date=" + update_date + "]";
 	}
 
@@ -128,8 +128,8 @@ public class FoodEatingEvent {
 	 * 
 	 * @return FoodEatingEvent foodEatingEvent
 	 */
-	public FoodEatingEvent getFoodEatingEventResponse() {
-		FoodEatingEvent fevToReturn = new FoodEatingEvent(name, calory, created_date, update_date, category);
+	public FoodEventDAO getFoodEatingEventResponse() {
+		FoodEventDAO fevToReturn = new FoodEventDAO(name, calory, created_date, update_date, category);
 		fevToReturn.setId(id);
 		return fevToReturn;
 	}

@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "user")
-public class User {
+public class UserDAO {
 
 	@Id
 	@Column(name = "id")
@@ -39,13 +39,13 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
-	private List<FoodEatingEvent> eatingEvents;
+	private List<FoodEventDAO> eatingEvents;
 
-	public User() {
+	public UserDAO() {
 		super();
 	}
 
-	public User(String username, String password, Date created_date) {
+	public UserDAO(String username, String password, Date created_date) {
 		super();
 		setPassword(password);
 		setUsername(username);
@@ -84,11 +84,11 @@ public class User {
 		this.created_date = created_date;
 	}
 
-	public List<FoodEatingEvent> getEatingEvents() {
+	public List<FoodEventDAO> getEatingEvents() {
 		return eatingEvents;
 	}
 
-	public void setEatingEvents(List<FoodEatingEvent> eatingEvents) {
+	public void setEatingEvents(List<FoodEventDAO> eatingEvents) {
 		this.eatingEvents = eatingEvents;
 	}
 
@@ -97,7 +97,7 @@ public class User {
 	 * 
 	 * @param fev food eating event to add
 	 */
-	public void addFoodEatingEvent(FoodEatingEvent fev) {
+	public void addFoodEatingEvent(FoodEventDAO fev) {
 		if (this.eatingEvents == null) {
 			this.eatingEvents = new ArrayList<>();
 		}

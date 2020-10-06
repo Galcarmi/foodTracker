@@ -1,4 +1,4 @@
-package il.ac.hit.foodtracker.utils;
+package il.ac.hit.foodtracker.services;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,9 +10,12 @@ import java.security.Key;
 import java.util.Date;
 import il.ac.hit.foodtracker.model.CurrentUser;
 import il.ac.hit.foodtracker.rest.filters.WebApplicationErrorThrower;
+import il.ac.hit.foodtracker.utils.DateUtils;
+import il.ac.hit.foodtracker.utils.ErrorUtils;
+import il.ac.hit.foodtracker.utils.ServerConstants;
 
 @SuppressWarnings("deprecation")
-public class JwtUtils {
+public class JwtService {
 
 	private static Key key;
 

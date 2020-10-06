@@ -7,8 +7,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import il.ac.hit.foodtracker.exceptions.AuthVerifyException;
 import il.ac.hit.foodtracker.model.CurrentUser;
+import il.ac.hit.foodtracker.services.UserService;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
-import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
  * implements jersey filter - authenticate the user with a jwt token for each
@@ -78,6 +78,6 @@ public class AuthFilterImplementation implements ContainerRequestFilter {
 	 */
 	private CurrentUser verifyToken(String token) {
 
-		return UserUtils.verifyUserLoggedIn(token);
+		return UserService.verifyUserLoggedIn(token);
 	}
 }

@@ -1,10 +1,10 @@
-package il.ac.hit.foodtracker.utils;
+package il.ac.hit.foodtracker.services;
 
 import java.util.List;
 import javax.persistence.PersistenceException;
 import il.ac.hit.foodtracker.exceptions.MissingDataException;
 import il.ac.hit.foodtracker.model.CurrentUser;
-import il.ac.hit.foodtracker.model.FoodEatingEvent;
+import il.ac.hit.foodtracker.model.FoodEventDAO;
 import il.ac.hit.foodtracker.utils.hibernate.FEVUtilsHibernate;
 
 /**
@@ -12,7 +12,7 @@ import il.ac.hit.foodtracker.utils.hibernate.FEVUtilsHibernate;
  * @author Carmi
  *
  */
-public class FEVUtils {
+public class FEVService {
 
 	/**
 	 * get all food eating events by time range
@@ -20,9 +20,9 @@ public class FEVUtils {
 	 * @throws PersistenceException e
 	 * @return List list of food eating events
 	 */
-	public static List<FoodEatingEvent> getEventsByTimeRange(String timeRange) throws PersistenceException{
+	public static List<FoodEventDAO> getEventsByTimeRange(String timeRange, int userId) throws PersistenceException{
 		
-		return FEVUtilsHibernate.getAllEventForTimeRange(timeRange);
+		return FEVUtilsHibernate.getAllEventForTimeRange(timeRange,userId);
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class FEVUtils {
 	 * @throws PersistenceException e
 	 * @return FoodEatingEvent foodEatingEvent
 	 */
-	public static FoodEatingEvent getFoodEventById(String foodEventId) throws PersistenceException{
+	public static FoodEventDAO getFoodEventById(String foodEventId) throws PersistenceException{
 		
 		return FEVUtilsHibernate.getFoodEventById(Integer.parseInt(foodEventId));
 	}
@@ -43,7 +43,7 @@ public class FEVUtils {
 	 * @throws MissingDataException e
 	 * @throws PersistenceException e
 	 */
-	public static void addFoodEatingEvent(FoodEatingEvent fev, CurrentUser currentUser) throws PersistenceException, MissingDataException {
+	public static void addFoodEatingEvent(FoodEventDAO fev, CurrentUser currentUser) throws PersistenceException, MissingDataException {
 		fev.validateAllRequiredFields();
 		FEVUtilsHibernate.addFoodEvent(fev, currentUser.getId());
 	}

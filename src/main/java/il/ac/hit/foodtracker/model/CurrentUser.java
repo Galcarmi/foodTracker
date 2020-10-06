@@ -6,7 +6,7 @@ package il.ac.hit.foodtracker.model;
  * @author Carmi
  *
  */
-public class CurrentUser extends User {
+public class CurrentUser extends UserDAO {
 
 	private boolean m_Verified;
 

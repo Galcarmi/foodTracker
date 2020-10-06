@@ -8,9 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import il.ac.hit.foodtracker.model.User;
+import il.ac.hit.foodtracker.model.UserDAO;
+import il.ac.hit.foodtracker.services.UserService;
 import il.ac.hit.foodtracker.utils.ErrorUtils;
-import il.ac.hit.foodtracker.utils.UserUtils;
 
 /**
  * jersey route class for /rest/register
@@ -24,19 +24,19 @@ public class Register {
 	/**
 	 * api path for register
 	 * 
-	 * @param user User
+	 * @param userDAO User
 	 * @return Response jwt token
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response register(User user) {
+	public Response register(UserDAO userDAO) {
 		Status status;
 		Object message;
 		try {
-			String username = user.getUsername();
-			String password = user.getPassword();
-			String token = UserUtils.registerUser(username, password);
+			String username = userDAO.getUsername();
+			String password = userDAO.getPassword();
+			String token = UserService.registerUser(username, password);
 
 			status = Status.OK;
 			message = token;
